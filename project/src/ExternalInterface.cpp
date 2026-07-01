@@ -90,7 +90,7 @@ namespace lime {
 	}
 
 
-	value allocInt64 (int64_t val) {
+	static value allocInt64 (int64_t val) {
 
 		int32_t low = val;
 		int32_t high = (val >> 32);
@@ -103,7 +103,7 @@ namespace lime {
 	}
 
 
-	vdynamic* hl_allocInt64 (int64_t val) {
+	static vdynamic* hl_allocInt64 (int64_t val) {
 
 		int32_t low = val;
 		int32_t high = (val >> 32);
