@@ -6,6 +6,82 @@
 #define SDL_config_h_
 #include "SDL_platform.h"
 
+/* ===== common to all supported targets ===== */
+#if defined(__WIN32__) || defined(__WINGDK__) || defined(__WINRT__) || defined(__MACOSX__) || defined(__IPHONEOS__) || defined(__ANDROID__) || defined(__EMSCRIPTEN__)
+#define HAVE_ABS 1
+#define HAVE_ACOS 1
+#define HAVE_ACOSF 1
+#define HAVE_ALLOCA 1
+#define HAVE_ASIN 1
+#define HAVE_ASINF 1
+#define HAVE_ATAN 1
+#define HAVE_ATAN2 1
+#define HAVE_ATAN2F 1
+#define HAVE_ATANF 1
+#define HAVE_ATOF 1
+#define HAVE_ATOI 1
+#define HAVE_BSEARCH 1
+#define HAVE_CALLOC 1
+#define HAVE_CEIL 1
+#define HAVE_CEILF 1
+#define HAVE_COS 1
+#define HAVE_COSF 1
+#define HAVE_CTYPE_H 1
+#define HAVE_EXP 1
+#define HAVE_EXPF 1
+#define HAVE_FABS 1
+#define HAVE_FABSF 1
+#define HAVE_FLOOR 1
+#define HAVE_FLOORF 1
+#define HAVE_FMOD 1
+#define HAVE_FMODF 1
+#define HAVE_FREE 1
+#define HAVE_LIMITS_H 1
+#define HAVE_LOG 1
+#define HAVE_LOG10 1
+#define HAVE_LOG10F 1
+#define HAVE_LOGF 1
+#define HAVE_LROUND 1
+#define HAVE_LROUNDF 1
+#define HAVE_MALLOC 1
+#define HAVE_MATH_H 1
+#define HAVE_MEMCMP 1
+#define HAVE_MEMCPY 1
+#define HAVE_MEMMOVE 1
+#define HAVE_MEMSET 1
+#define HAVE_POW 1
+#define HAVE_POWF 1
+#define HAVE_QSORT 1
+#define HAVE_REALLOC 1
+#define HAVE_ROUND 1
+#define HAVE_ROUNDF 1
+#define HAVE_SIGNAL_H 1
+#define HAVE_SIN 1
+#define HAVE_SINF 1
+#define HAVE_SQRT 1
+#define HAVE_SQRTF 1
+#define HAVE_STDINT_H 1
+#define HAVE_STDIO_H 1
+#define HAVE_STRCHR 1
+#define HAVE_STRCMP 1
+#define HAVE_STRING_H 1
+#define HAVE_STRLEN 1
+#define HAVE_STRNCMP 1
+#define HAVE_STRRCHR 1
+#define HAVE_STRSTR 1
+#define HAVE_STRTOD 1
+#define HAVE_STRTOL 1
+#define HAVE_STRTOUL 1
+#define HAVE_TAN 1
+#define HAVE_TANF 1
+#define HAVE_TRUNC 1
+#define HAVE_TRUNCF 1
+#define SDL_AUDIO_DRIVER_DUMMY 1
+#define SDL_VIDEO_OPENGL_ES2 1
+#define SDL_VIDEO_RENDER_OGL_ES2 1
+#define STDC_HEADERS 1
+#endif
+
 #if defined(__WIN32__) || defined(__WINGDK__)
 #if !defined(HAVE_WINSDKVER_H) && defined(__has_include)
 #if __has_include(<winsdkver.h>)
@@ -44,7 +120,6 @@ typedef unsigned int uintptr_t;
 #endif
 
 #else
-#define HAVE_STDINT_H 1
 #endif
 #endif
 #ifdef _WIN64
@@ -90,93 +165,25 @@ typedef unsigned int uintptr_t;
 # endif
 #endif
 #ifdef HAVE_LIBC
-#define STDC_HEADERS 1
-#define HAVE_CTYPE_H 1
 #define HAVE_FLOAT_H 1
-#define HAVE_LIMITS_H 1
-#define HAVE_MATH_H 1
-#define HAVE_SIGNAL_H 1
-#define HAVE_STDIO_H 1
-#define HAVE_STRING_H 1
-#define HAVE_MALLOC 1
-#define HAVE_CALLOC 1
-#define HAVE_REALLOC 1
-#define HAVE_FREE 1
-#define HAVE_ALLOCA 1
 #ifndef __WATCOMC__
-#define HAVE_QSORT 1
-#define HAVE_BSEARCH 1
 #endif
-#define HAVE_ABS 1
-#define HAVE_MEMSET 1
-#define HAVE_MEMCPY 1
-#define HAVE_MEMMOVE 1
-#define HAVE_MEMCMP 1
-#define HAVE_STRLEN 1
 #define HAVE__STRREV 1
-#define HAVE_STRCHR 1
-#define HAVE_STRRCHR 1
-#define HAVE_STRSTR 1
-#define HAVE_STRTOL 1
-#define HAVE_STRTOUL 1
-#define HAVE_STRTOD 1
-#define HAVE_ATOI 1
-#define HAVE_ATOF 1
-#define HAVE_STRCMP 1
-#define HAVE_STRNCMP 1
 #define HAVE__STRICMP 1
 #define HAVE__STRNICMP 1
 #define HAVE__WCSICMP 1
 #define HAVE__WCSNICMP 1
 #define HAVE__WCSDUP 1
-#define HAVE_ACOS   1
-#define HAVE_ASIN   1
-#define HAVE_ATAN   1
-#define HAVE_ATAN2  1
-#define HAVE_CEIL   1
-#define HAVE_COS    1
-#define HAVE_EXP    1
-#define HAVE_FABS   1
-#define HAVE_FLOOR  1
-#define HAVE_FMOD   1
-#define HAVE_LOG    1
-#define HAVE_LOG10  1
-#define HAVE_POW    1
-#define HAVE_SIN    1
-#define HAVE_SQRT   1
-#define HAVE_TAN    1
 #ifndef __WATCOMC__
-#define HAVE_ACOSF  1
-#define HAVE_ASINF  1
-#define HAVE_ATANF  1
-#define HAVE_ATAN2F 1
-#define HAVE_CEILF  1
 #define HAVE__COPYSIGN 1
-#define HAVE_COSF   1
-#define HAVE_EXPF   1
-#define HAVE_FABSF  1
-#define HAVE_FLOORF 1
-#define HAVE_FMODF  1
-#define HAVE_LOGF   1
-#define HAVE_LOG10F 1
-#define HAVE_POWF   1
-#define HAVE_SINF   1
-#define HAVE_SQRTF  1
-#define HAVE_TANF   1
 #endif
 #if defined(_MSC_VER)
 #if _MSC_VER >= 1800
 #define HAVE_STRTOLL 1
 #define HAVE_STRTOULL 1
 #define HAVE_VSSCANF 1
-#define HAVE_LROUND 1
-#define HAVE_LROUNDF 1
-#define HAVE_ROUND 1
-#define HAVE_ROUNDF 1
 #define HAVE_SCALBN 1
 #define HAVE_SCALBNF 1
-#define HAVE_TRUNC  1
-#define HAVE_TRUNCF 1
 #endif
 #if _MSC_VER >= 1400
 #define HAVE__FSEEKI64 1
@@ -189,9 +196,7 @@ typedef unsigned int uintptr_t;
 #define HAVE_STRTOLL 1
 #define HAVE_STRTOULL 1
 #define HAVE_VSSCANF 1
-#define HAVE_ROUND 1
 #define HAVE_SCALBN 1
-#define HAVE_TRUNC  1
 
 #else
 #define HAVE_M_PI 1
@@ -207,7 +212,6 @@ typedef unsigned int uintptr_t;
 #define SDL_AUDIO_DRIVER_DSOUND 1
 #define SDL_AUDIO_DRIVER_WINMM  1
 #define SDL_AUDIO_DRIVER_DISK   1
-#define SDL_AUDIO_DRIVER_DUMMY  1
 #define SDL_JOYSTICK_DINPUT 1
 #define SDL_JOYSTICK_HIDAPI 1
 #ifndef __WINRT__
@@ -251,10 +255,8 @@ typedef unsigned int uintptr_t;
 #define SDL_VIDEO_RENDER_OGL    1
 #endif
 #ifndef SDL_VIDEO_RENDER_OGL_ES2
-#define SDL_VIDEO_RENDER_OGL_ES2    1
 #endif
 #ifndef SDL_VIDEO_OPENGL_ES2
-#define SDL_VIDEO_OPENGL_ES2    1
 #endif
 #ifndef SDL_VIDEO_OPENGL_EGL
 #define SDL_VIDEO_OPENGL_EGL    1
@@ -288,89 +290,19 @@ typedef unsigned int uintptr_t;
 #define HAVE_AUDIOCLIENT_H 1
 #define HAVE_TPCSHRD_H 1
 #define HAVE_LIBC 1
-#define STDC_HEADERS 1
-#define HAVE_CTYPE_H 1
 #define HAVE_FLOAT_H 1
-#define HAVE_LIMITS_H 1
-#define HAVE_MATH_H 1
-#define HAVE_SIGNAL_H 1
-#define HAVE_STDINT_H 1
-#define HAVE_STDIO_H 1
-#define HAVE_STRING_H 1
-#define HAVE_MALLOC 1
-#define HAVE_CALLOC 1
-#define HAVE_REALLOC 1
-#define HAVE_FREE 1
-#define HAVE_ALLOCA 1
-#define HAVE_QSORT 1
-#define HAVE_BSEARCH 1
-#define HAVE_ABS 1
-#define HAVE_MEMSET 1
-#define HAVE_MEMCPY 1
-#define HAVE_MEMMOVE 1
-#define HAVE_MEMCMP 1
-#define HAVE_STRLEN 1
 #define HAVE__STRREV 1
 #define HAVE__STRUPR 1
-#define HAVE_STRCHR 1
-#define HAVE_STRRCHR 1
-#define HAVE_STRSTR 1
-#define HAVE_STRTOL 1
-#define HAVE_STRTOUL 1
-#define HAVE_STRTOD 1
-#define HAVE_ATOI 1
-#define HAVE_ATOF 1
-#define HAVE_STRCMP 1
-#define HAVE_STRNCMP 1
 #define HAVE__STRICMP 1
 #define HAVE__STRNICMP 1
 #define HAVE_VSNPRINTF 1
 #define HAVE_M_PI 1
-#define HAVE_ACOS   1
-#define HAVE_ACOSF  1
-#define HAVE_ASIN   1
-#define HAVE_ASINF  1
-#define HAVE_ATAN   1
-#define HAVE_ATANF  1
-#define HAVE_ATAN2  1
-#define HAVE_ATAN2F 1
-#define HAVE_CEIL   1
-#define HAVE_CEILF  1
 #define HAVE__COPYSIGN 1
-#define HAVE_COS    1
-#define HAVE_COSF   1
-#define HAVE_EXP    1
-#define HAVE_EXPF   1
-#define HAVE_FABS   1
-#define HAVE_FABSF  1
-#define HAVE_FLOOR  1
-#define HAVE_FLOORF 1
-#define HAVE_FMOD   1
-#define HAVE_FMODF  1
-#define HAVE_LOG    1
-#define HAVE_LOGF   1
-#define HAVE_LOG10  1
-#define HAVE_LOG10F 1
-#define HAVE_LROUND 1
-#define HAVE_LROUNDF 1
-#define HAVE_POW    1
-#define HAVE_POWF   1
-#define HAVE_ROUND 1
-#define HAVE_ROUNDF 1
 #define HAVE__SCALB 1
-#define HAVE_SIN    1
-#define HAVE_SINF   1
-#define HAVE_SQRT   1
-#define HAVE_SQRTF  1
-#define HAVE_TAN    1
-#define HAVE_TANF   1
-#define HAVE_TRUNC  1
-#define HAVE_TRUNCF 1
 #define HAVE__FSEEKI64 1
 #define HAVE_ROAPI_H  1
 #define SDL_AUDIO_DRIVER_WASAPI 1
 #define SDL_AUDIO_DRIVER_DISK   1
-#define SDL_AUDIO_DRIVER_DUMMY  1
 #if SDL_WINAPI_FAMILY_PHONE
 #define SDL_JOYSTICK_DISABLED 1
 #define SDL_HAPTIC_DISABLED 1
@@ -399,11 +331,9 @@ typedef unsigned int uintptr_t;
 #define SDL_TIMER_WINDOWS   1
 #define SDL_VIDEO_DRIVER_WINRT  1
 #define SDL_VIDEO_DRIVER_DUMMY  1
-#define SDL_VIDEO_OPENGL_ES2 1
 #define SDL_VIDEO_OPENGL_EGL 1
 #define SDL_VIDEO_RENDER_D3D11  1
 #ifdef SDL_VIDEO_OPENGL_ES2
-#define SDL_VIDEO_RENDER_OGL_ES2 1
 #endif
 #define SDL_POWER_WINRT 1
 
@@ -415,101 +345,32 @@ typedef unsigned int uintptr_t;
 #else
     #define SIZEOF_VOIDP 4
 #endif
-#define STDC_HEADERS    1
 #define HAVE_ALLOCA_H       1
-#define HAVE_CTYPE_H    1
 #define HAVE_FLOAT_H    1
 #define HAVE_INTTYPES_H 1
-#define HAVE_LIMITS_H   1
-#define HAVE_MATH_H 1
-#define HAVE_SIGNAL_H   1
-#define HAVE_STDINT_H   1
-#define HAVE_STDIO_H    1
-#define HAVE_STRING_H   1
 #define HAVE_SYS_TYPES_H    1
 #define HAVE_LIBUNWIND_H    1
 #define HAVE_DLOPEN 1
-#define HAVE_MALLOC 1
-#define HAVE_CALLOC 1
-#define HAVE_REALLOC    1
-#define HAVE_FREE   1
-#define HAVE_ALLOCA 1
 #define HAVE_GETENV 1
 #define HAVE_SETENV 1
 #define HAVE_PUTENV 1
 #define HAVE_UNSETENV   1
-#define HAVE_QSORT  1
-#define HAVE_BSEARCH 1
-#define HAVE_ABS    1
 #define HAVE_BCOPY  1
-#define HAVE_MEMSET 1
-#define HAVE_MEMCPY 1
-#define HAVE_MEMMOVE    1
-#define HAVE_MEMCMP 1
-#define HAVE_STRLEN 1
 #define HAVE_STRLCPY    1
 #define HAVE_STRLCAT    1
-#define HAVE_STRCHR 1
-#define HAVE_STRRCHR    1
-#define HAVE_STRSTR 1
 #define HAVE_STRTOK_R 1
-#define HAVE_STRTOL 1
-#define HAVE_STRTOUL    1
 #define HAVE_STRTOLL    1
 #define HAVE_STRTOULL   1
-#define HAVE_STRTOD 1
-#define HAVE_ATOI   1
-#define HAVE_ATOF   1
-#define HAVE_STRCMP 1
-#define HAVE_STRNCMP    1
 #define HAVE_STRCASECMP 1
 #define HAVE_STRNCASECMP 1
 #define HAVE_STRCASESTR 1
 #define HAVE_VSSCANF 1
 #define HAVE_VSNPRINTF  1
 #define HAVE_M_PI   1
-#define HAVE_ACOS   1
-#define HAVE_ACOSF  1
-#define HAVE_ASIN   1
-#define HAVE_ASINF  1
-#define HAVE_ATAN   1
-#define HAVE_ATANF  1
-#define HAVE_ATAN2  1
-#define HAVE_ATAN2F 1
-#define HAVE_CEIL   1
-#define HAVE_CEILF  1
 #define HAVE_COPYSIGN   1
 #define HAVE_COPYSIGNF  1
-#define HAVE_COS    1
-#define HAVE_COSF   1
-#define HAVE_EXP    1
-#define HAVE_EXPF   1
-#define HAVE_FABS   1
-#define HAVE_FABSF  1
-#define HAVE_FLOOR  1
-#define HAVE_FLOORF 1
-#define HAVE_FMOD   1
-#define HAVE_FMODF  1
-#define HAVE_LOG    1
-#define HAVE_LOGF   1
-#define HAVE_LOG10  1
-#define HAVE_LOG10F 1
-#define HAVE_LROUND 1
-#define HAVE_LROUNDF 1
-#define HAVE_POW    1
-#define HAVE_POWF   1
-#define HAVE_ROUND  1
-#define HAVE_ROUNDF 1
 #define HAVE_SCALBN 1
 #define HAVE_SCALBNF    1
-#define HAVE_SIN    1
-#define HAVE_SINF   1
-#define HAVE_SQRT   1
-#define HAVE_SQRTF  1
-#define HAVE_TAN    1
-#define HAVE_TANF   1
-#define HAVE_TRUNC    1
-#define HAVE_TRUNCF   1
 #define HAVE_SIGACTION  1
 #define HAVE_SETJMP 1
 #define HAVE_NANOSLEEP  1
@@ -526,7 +387,6 @@ typedef unsigned int uintptr_t;
 #define HAVE_GCC_ATOMICS 1
 #define SDL_AUDIO_DRIVER_COREAUDIO  1
 #define SDL_AUDIO_DRIVER_DISK   1
-#define SDL_AUDIO_DRIVER_DUMMY  1
 #define SDL_JOYSTICK_HIDAPI 1
 #define SDL_JOYSTICK_IOKIT  1
 #define SDL_JOYSTICK_VIRTUAL    1
@@ -560,7 +420,6 @@ typedef unsigned int uintptr_t;
 #define SDL_VIDEO_RENDER_OGL    1
 #endif
 #ifndef SDL_VIDEO_RENDER_OGL_ES2
-#define SDL_VIDEO_RENDER_OGL_ES2 1
 #endif
 #if TARGET_RT_64_BIT && (MAC_OS_X_VERSION_MAX_ALLOWED >= 101100)
 #define SDL_PLATFORM_SUPPORTS_METAL    1
@@ -580,7 +439,6 @@ typedef unsigned int uintptr_t;
 #define SDL_VIDEO_OPENGL    1
 #endif
 #ifndef SDL_VIDEO_OPENGL_ES2
-#define SDL_VIDEO_OPENGL_ES2    1
 #endif
 #ifndef SDL_VIDEO_OPENGL_EGL
 #define SDL_VIDEO_OPENGL_EGL    1
@@ -621,100 +479,31 @@ typedef unsigned int uintptr_t;
 #define SIZEOF_VOIDP 4
 #endif
 #define HAVE_GCC_ATOMICS    1
-#define STDC_HEADERS    1
 #define HAVE_ALLOCA_H       1
-#define HAVE_CTYPE_H    1
 #define HAVE_INTTYPES_H 1
-#define HAVE_LIMITS_H   1
-#define HAVE_MATH_H 1
-#define HAVE_SIGNAL_H   1
-#define HAVE_STDINT_H   1
-#define HAVE_STDIO_H    1
-#define HAVE_STRING_H   1
 #define HAVE_SYS_TYPES_H    1
 #define HAVE_DLOPEN 1
-#define HAVE_MALLOC 1
-#define HAVE_CALLOC 1
-#define HAVE_REALLOC    1
-#define HAVE_FREE   1
-#define HAVE_ALLOCA 1
 #define HAVE_GETENV 1
 #define HAVE_SETENV 1
 #define HAVE_PUTENV 1
 #define HAVE_SETENV 1
 #define HAVE_UNSETENV   1
-#define HAVE_QSORT  1
-#define HAVE_BSEARCH 1
-#define HAVE_ABS    1
 #define HAVE_BCOPY  1
-#define HAVE_MEMSET 1
-#define HAVE_MEMCPY 1
-#define HAVE_MEMMOVE    1
-#define HAVE_MEMCMP 1
-#define HAVE_STRLEN 1
 #define HAVE_STRLCPY    1
 #define HAVE_STRLCAT    1
-#define HAVE_STRCHR 1
-#define HAVE_STRRCHR    1
-#define HAVE_STRSTR 1
 #define HAVE_STRTOK_R 1
-#define HAVE_STRTOL 1
-#define HAVE_STRTOUL    1
 #define HAVE_STRTOLL    1
 #define HAVE_STRTOULL   1
-#define HAVE_STRTOD 1
-#define HAVE_ATOI   1
-#define HAVE_ATOF   1
-#define HAVE_STRCMP 1
-#define HAVE_STRNCMP    1
 #define HAVE_STRCASECMP 1
 #define HAVE_STRNCASECMP 1
 #define HAVE_STRCASESTR 1
 #define HAVE_VSSCANF 1
 #define HAVE_VSNPRINTF  1
 #define HAVE_M_PI   1
-#define HAVE_ACOS   1
-#define HAVE_ACOSF  1
-#define HAVE_ASIN   1
-#define HAVE_ASINF  1
-#define HAVE_ATAN   1
-#define HAVE_ATANF  1
-#define HAVE_ATAN2  1
-#define HAVE_ATAN2F 1
-#define HAVE_CEIL   1
-#define HAVE_CEILF  1
 #define HAVE_COPYSIGN   1
 #define HAVE_COPYSIGNF  1
-#define HAVE_COS    1
-#define HAVE_COSF   1
-#define HAVE_EXP    1
-#define HAVE_EXPF   1
-#define HAVE_FABS   1
-#define HAVE_FABSF  1
-#define HAVE_FLOOR  1
-#define HAVE_FLOORF 1
-#define HAVE_FMOD   1
-#define HAVE_FMODF  1
-#define HAVE_LOG    1
-#define HAVE_LOGF   1
-#define HAVE_LOG10  1
-#define HAVE_LOG10F 1
-#define HAVE_LROUND 1
-#define HAVE_LROUNDF 1
-#define HAVE_POW    1
-#define HAVE_POWF   1
-#define HAVE_ROUND  1
-#define HAVE_ROUNDF 1
 #define HAVE_SCALBN 1
 #define HAVE_SCALBNF    1
-#define HAVE_SIN    1
-#define HAVE_SINF   1
-#define HAVE_SQRT   1
-#define HAVE_SQRTF  1
-#define HAVE_TAN    1
-#define HAVE_TANF   1
-#define HAVE_TRUNC  1
-#define HAVE_TRUNCF 1
 #define HAVE_SIGACTION  1
 #define HAVE_SETJMP 1
 #define HAVE_NANOSLEEP  1
@@ -722,7 +511,6 @@ typedef unsigned int uintptr_t;
 #define HAVE_SYSCTLBYNAME 1
 #define HAVE_O_CLOEXEC 1
 #define SDL_AUDIO_DRIVER_COREAUDIO 1
-#define SDL_AUDIO_DRIVER_DUMMY  1
 #define SDL_HAPTIC_DUMMY 1
 #define SDL_JOYSTICK_MFI 1
 #define SDL_JOYSTICK_VIRTUAL    1
@@ -739,10 +527,8 @@ typedef unsigned int uintptr_t;
 #define SDL_VIDEO_DRIVER_UIKIT  1
 #define SDL_VIDEO_DRIVER_DUMMY  1
 #if !TARGET_OS_MACCATALYST
-#define SDL_VIDEO_OPENGL_ES2 1
 #define SDL_VIDEO_OPENGL_ES 1
 #define SDL_VIDEO_RENDER_OGL_ES 1
-#define SDL_VIDEO_RENDER_OGL_ES2    1
 #endif
 #if (TARGET_OS_SIMULATOR && ((__IPHONE_OS_VERSION_MIN_REQUIRED >= 130000) || (__TV_OS_VERSION_MIN_REQUIRED >= 130000))) || (!TARGET_CPU_ARM && ((__IPHONE_OS_VERSION_MIN_REQUIRED >= 80000) || (__TV_OS_VERSION_MIN_REQUIRED >= 90000)))
 #define SDL_PLATFORM_SUPPORTS_METAL	1
@@ -767,99 +553,30 @@ typedef unsigned int uintptr_t;
 #elif defined(__ANDROID__)
 #include <stdarg.h>
 #define HAVE_GCC_ATOMICS    1
-#define STDC_HEADERS    1
 #define HAVE_ALLOCA_H       1
-#define HAVE_CTYPE_H    1
 #define HAVE_INTTYPES_H 1
-#define HAVE_LIMITS_H   1
-#define HAVE_MATH_H 1
-#define HAVE_SIGNAL_H 1
-#define HAVE_STDINT_H   1
-#define HAVE_STDIO_H    1
-#define HAVE_STRING_H   1
 #define HAVE_SYS_TYPES_H    1
 #define HAVE_DLOPEN 1
-#define HAVE_MALLOC 1
-#define HAVE_CALLOC 1
-#define HAVE_REALLOC    1
-#define HAVE_FREE   1
-#define HAVE_ALLOCA 1
 #define HAVE_GETENV 1
 #define HAVE_SETENV 1
 #define HAVE_PUTENV 1
 #define HAVE_SETENV 1
 #define HAVE_UNSETENV   1
-#define HAVE_QSORT  1
-#define HAVE_BSEARCH 1
-#define HAVE_ABS    1
 #define HAVE_BCOPY  1
-#define HAVE_MEMSET 1
-#define HAVE_MEMCPY 1
-#define HAVE_MEMMOVE    1
-#define HAVE_MEMCMP 1
-#define HAVE_STRLEN 1
 #define HAVE_STRLCPY    1
 #define HAVE_STRLCAT    1
-#define HAVE_STRCHR 1
-#define HAVE_STRRCHR    1
-#define HAVE_STRSTR 1
 #define HAVE_STRTOK_R 1
-#define HAVE_STRTOL 1
-#define HAVE_STRTOUL    1
 #define HAVE_STRTOLL    1
 #define HAVE_STRTOULL   1
-#define HAVE_STRTOD 1
-#define HAVE_ATOI   1
-#define HAVE_ATOF 1
-#define HAVE_STRCMP 1
-#define HAVE_STRNCMP    1
 #define HAVE_STRCASECMP 1
 #define HAVE_STRNCASECMP 1
 #define HAVE_STRCASESTR 1
 #define HAVE_VSSCANF 1
 #define HAVE_VSNPRINTF  1
-#define HAVE_ACOS   1
-#define HAVE_ACOSF  1
-#define HAVE_ASIN   1
-#define HAVE_ASINF  1
-#define HAVE_ATAN   1
-#define HAVE_ATANF  1
-#define HAVE_ATAN2  1
-#define HAVE_ATAN2F 1
-#define HAVE_CEIL   1
-#define HAVE_CEILF  1
 #define HAVE_COPYSIGN   1
 #define HAVE_COPYSIGNF  1
-#define HAVE_COS    1
-#define HAVE_COSF   1
-#define HAVE_EXP    1
-#define HAVE_EXPF   1
-#define HAVE_FABS   1
-#define HAVE_FABSF  1
-#define HAVE_FLOOR  1
-#define HAVE_FLOORF 1
-#define HAVE_FMOD   1
-#define HAVE_FMODF  1
-#define HAVE_LOG    1
-#define HAVE_LOGF   1
-#define HAVE_LOG10  1
-#define HAVE_LOG10F 1
-#define HAVE_LROUND 1
-#define HAVE_LROUNDF 1
-#define HAVE_POW    1
-#define HAVE_POWF   1
-#define HAVE_ROUND  1
-#define HAVE_ROUNDF 1
 #define HAVE_SCALBN 1
 #define HAVE_SCALBNF    1
-#define HAVE_SIN    1
-#define HAVE_SINF   1
-#define HAVE_SQRT   1
-#define HAVE_SQRTF  1
-#define HAVE_TAN    1
-#define HAVE_TANF   1
-#define HAVE_TRUNC    1
-#define HAVE_TRUNCF   1
 #define HAVE_SIGACTION 1
 #define HAVE_SETJMP 1
 #define HAVE_NANOSLEEP  1
@@ -874,7 +591,6 @@ typedef unsigned int uintptr_t;
 #define SDL_AUDIO_DRIVER_ANDROID    1
 #define SDL_AUDIO_DRIVER_OPENSLES   1
 #define SDL_AUDIO_DRIVER_AAUDIO     1
-#define SDL_AUDIO_DRIVER_DUMMY  1
 #define SDL_JOYSTICK_ANDROID    1
 #define SDL_JOYSTICK_HIDAPI     1
 #define SDL_JOYSTICK_VIRTUAL    1
@@ -886,10 +602,8 @@ typedef unsigned int uintptr_t;
 #define SDL_TIMER_UNIX  1
 #define SDL_VIDEO_DRIVER_ANDROID 1
 #define SDL_VIDEO_OPENGL_ES 1
-#define SDL_VIDEO_OPENGL_ES2 1
 #define SDL_VIDEO_OPENGL_EGL 1
 #define SDL_VIDEO_RENDER_OGL_ES 1
-#define SDL_VIDEO_RENDER_OGL_ES2    1
 #if defined(__ARM_ARCH) && __ARM_ARCH < 7
 #define SDL_VIDEO_VULKAN 0
 
@@ -907,42 +621,22 @@ typedef unsigned int uintptr_t;
 #define SIZEOF_VOIDP 4
 #endif
 #define HAVE_GCC_ATOMICS 1
-#define STDC_HEADERS 1
 #define HAVE_ALLOCA_H 1
-#define HAVE_CTYPE_H 1
 #define HAVE_ICONV_H 1
 #define HAVE_INTTYPES_H 1
-#define HAVE_LIMITS_H 1
 #define HAVE_MALLOC_H 1
-#define HAVE_MATH_H 1
 #define HAVE_MEMORY_H 1
-#define HAVE_SIGNAL_H 1
 #define HAVE_STDARG_H 1
-#define HAVE_STDINT_H 1
-#define HAVE_STDIO_H 1
 #define HAVE_STDLIB_H 1
 #define HAVE_STRINGS_H 1
-#define HAVE_STRING_H 1
 #define HAVE_SYS_TYPES_H 1
 #define HAVE_WCHAR_H 1
 #define HAVE_DLOPEN 1
-#define HAVE_MALLOC 1
-#define HAVE_CALLOC 1
-#define HAVE_REALLOC 1
-#define HAVE_FREE 1
-#define HAVE_ALLOCA 1
 #define HAVE_GETENV 1
 #define HAVE_SETENV 1
 #define HAVE_PUTENV 1
 #define HAVE_UNSETENV 1
-#define HAVE_QSORT 1
-#define HAVE_BSEARCH 1
-#define HAVE_ABS 1
 #define HAVE_BCOPY 1
-#define HAVE_MEMSET 1
-#define HAVE_MEMCPY 1
-#define HAVE_MEMMOVE 1
-#define HAVE_MEMCMP 1
 #define HAVE_WCSLEN 1
 #define HAVE_WCSDUP 1
 #define HAVE_WCSSTR 1
@@ -950,70 +644,21 @@ typedef unsigned int uintptr_t;
 #define HAVE_WCSNCMP 1
 #define HAVE_WCSCASECMP 1
 #define HAVE_WCSNCASECMP 1
-#define HAVE_STRLEN 1
 #define HAVE_STRLCPY 1
 #define HAVE_STRLCAT 1
-#define HAVE_STRCHR 1
-#define HAVE_STRRCHR 1
-#define HAVE_STRSTR 1
 #define HAVE_STRTOK_R 1
-#define HAVE_STRTOL 1
-#define HAVE_STRTOUL 1
 #define HAVE_STRTOLL 1
 #define HAVE_STRTOULL 1
-#define HAVE_STRTOD 1
-#define HAVE_ATOI 1
-#define HAVE_ATOF 1
-#define HAVE_STRCMP 1
-#define HAVE_STRNCMP 1
 #define HAVE_STRCASECMP 1
 #define HAVE_STRNCASECMP 1
 #define HAVE_SSCANF 1
 #define HAVE_VSSCANF 1
 #define HAVE_VSNPRINTF 1
 #define HAVE_M_PI 1
-#define HAVE_ACOS 1
-#define HAVE_ACOSF 1
-#define HAVE_ASIN 1
-#define HAVE_ASINF 1
-#define HAVE_ATAN 1
-#define HAVE_ATANF 1
-#define HAVE_ATAN2 1
-#define HAVE_ATAN2F 1
-#define HAVE_CEIL 1
-#define HAVE_CEILF 1
 #define HAVE_COPYSIGN 1
 #define HAVE_COPYSIGNF 1
-#define HAVE_COS 1
-#define HAVE_COSF 1
-#define HAVE_EXP 1
-#define HAVE_EXPF 1
-#define HAVE_FABS 1
-#define HAVE_FABSF 1
-#define HAVE_FLOOR 1
-#define HAVE_FLOORF 1
-#define HAVE_FMOD 1
-#define HAVE_FMODF 1
-#define HAVE_LOG 1
-#define HAVE_LOGF 1
-#define HAVE_LOG10 1
-#define HAVE_LOG10F 1
-#define HAVE_LROUND 1
-#define HAVE_LROUNDF 1
-#define HAVE_POW 1
-#define HAVE_POWF 1
-#define HAVE_ROUND  1
-#define HAVE_ROUNDF 1
 #define HAVE_SCALBN 1
 #define HAVE_SCALBNF 1
-#define HAVE_SIN 1
-#define HAVE_SINF 1
-#define HAVE_SQRT 1
-#define HAVE_SQRTF 1
-#define HAVE_TAN 1
-#define HAVE_TANF 1
-#define HAVE_TRUNC 1
-#define HAVE_TRUNCF 1
 #define HAVE_FSEEKO 1
 #define HAVE_FSEEKO64 1
 #define HAVE_SIGACTION 1
@@ -1031,7 +676,6 @@ typedef unsigned int uintptr_t;
 #define SDL_THREADS_DISABLED 1
 #endif
 #define SDL_AUDIO_DRIVER_DISK 1
-#define SDL_AUDIO_DRIVER_DUMMY 1
 #define SDL_AUDIO_DRIVER_EMSCRIPTEN 1
 #define SDL_JOYSTICK_EMSCRIPTEN 1
 #define SDL_SENSOR_DUMMY 1
@@ -1042,8 +686,6 @@ typedef unsigned int uintptr_t;
 #endif
 #define SDL_TIMER_UNIX 1
 #define SDL_VIDEO_DRIVER_EMSCRIPTEN 1
-#define SDL_VIDEO_RENDER_OGL_ES2 1
-#define SDL_VIDEO_OPENGL_ES2 1
 #define SDL_VIDEO_OPENGL_EGL 1
 #define SDL_POWER_EMSCRIPTEN 1
 #define SDL_FILESYSTEM_EMSCRIPTEN 1
@@ -1090,3 +732,4 @@ typedef unsigned int uintptr_t;
 #define SDL_FILESYSTEM_DUMMY  1
 #endif
 #endif
+
