@@ -392,9 +392,9 @@ void LoadSEALDefaultConfig()
     SetConfigValue("drivers", "pipewire,pulse,alsa,jack,oss,null");
     #elif defined(__APPLE__)
     // SetConfigValue("drivers", "coreaudio,null");
-    SetConfigValue("drivers", "sdl3,null"); // coreaudio itself gives no audio output. weird.
+    SetConfigValue("drivers", "sdl2,coreaudio,null"); // coreaudio itself gives no audio output. weird.
     #elif defined(__ANDROID__)
-    SetConfigValue("drivers", "sdl3,oboe,opensl,null");
+    SetConfigValue("drivers", "sdl2,oboe,opensl,null");
     #endif
     SetConfigValue("sample-type", "float32");
     SetConfigValue("channels", "stereo");
