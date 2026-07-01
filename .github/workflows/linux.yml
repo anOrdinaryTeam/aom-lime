@@ -28,8 +28,8 @@ jobs:
       - name: Install Haxe dependencies
         run: |
           haxelib git hxcpp https://github.com/ShadowEngineTeam/hxcpp --quiet
-          haxelib git format https://github.com/HaxeFoundation/format 9d69fb342d030fa120d2deafafbbffad248332b8 --quiet
-          haxelib git hxp https://github.com/openfl/hxp 47ef5ae6569cb0961761a2fbb416694df067124c --quiet
+          haxelib install format --quiet
+          haxelib install hxp --quiet
       - name: Enable HXCPP compile cache
         run: echo "HXCPP_COMPILE_CACHE=~/.hxcpp" >> $GITHUB_ENV
       - name: Configure Lime
@@ -56,51 +56,4 @@ jobs:
             !**/.gitignore
             lime.png
           if-no-files-found: error
-  linuxarm:
-    runs-on: ubuntu-22.04-arm
-    steps:
-      - name: Checkout
-        uses: actions/checkout@main
-      - name: Install system dependencies
-        run: |
-          sudo dpkg --add-architecture armhf
-          wget -qO- https://apt.llvm.org/llvm-snapshot.gpg.key | sudo tee /etc/apt/trusted.gpg.d/apt.llvm.org.asc
-          echo "deb http://apt.llvm.org/jammy/ llvm-toolchain-jammy-22 main" | sudo tee /etc/apt/sources.list.d/llvm.list
-          sudo apt update
-          sudo apt-get install -y clang-22 lld-22 gcc-12-arm-linux-gnueabihf g++-12-arm-linux-gnueabihf libstdc++-12-dev-armhf-cross libdrm-dev:armhf libgl1-mesa-dev:armhf libglu1-mesa-dev:armhf libpulse-dev:armhf libasound2-dev:armhf libx11-dev:armhf libxext-dev:armhf libxi-dev:armhf libxrandr-dev:armhf libxinerama-dev:armhf libmbedtls-dev:armhf libpng-dev:armhf libturbojpeg-dev:armhf libuv1-dev:armhf libvorbis-dev:armhf libdbus-1-dev:armhf libpipewire-0.3-dev:armhf libxcursor-dev:armhf libxss-dev:armhf libudev-dev:armhf libwayland-dev:armhf libxkbcommon-dev:armhf libegl1-mesa-dev:armhf libgles2-mesa-dev:armhf gcc-12 g++-12 libdrm-dev libgl1-mesa-dev libglu1-mesa-dev libpulse-dev libasound2-dev libx11-dev libxext-dev libxi-dev libxrandr-dev libxinerama-dev libmbedtls-dev libpng-dev libturbojpeg-dev libuv1-dev libvorbis-dev libdbus-1-dev libpipewire-0.3-dev libxcursor-dev libxss-dev libudev-dev libwayland-dev libxkbcommon-dev libegl1-mesa-dev libgles2-mesa-dev libjack-dev --no-install-recommends --no-install-suggests
-      - name: Setup Haxe
-        uses: ShadowEngineTeam/setup-haxe@main
-        with:
-          haxe-version: ${{ env.HAXE_VERSION }}
-      - name: Install Haxe dependencies
-        run: |
-          haxelib setup ~/haxelib
-          haxelib git hxcpp https://github.com/ShadowEngineTeam/hxcpp --quiet
-          haxelib git format https://github.com/HaxeFoundation/format 9d69fb342d030fa120d2deafafbbffad248332b8 --quiet
-          haxelib git hxp https://github.com/openfl/hxp 47ef5ae6569cb0961761a2fbb416694df067124c --quiet
-      - name: Enable HXCPP compile cache
-        run: echo "HXCPP_COMPILE_CACHE=~/.hxcpp" >> $GITHUB_ENV
-      - name: Configure Lime
-        run: haxelib dev lime ${{ github.workspace }}
-      - name: Rebuild Lime
-        run: |
-          CC="clang-22 --target=arm-linux-gnueabihf" CXX="clang++-22 --target=arm-linux-gnueabihf" LDFLAGS="-fuse-ld=lld" linux32 haxelib run lime rebuild linux -armv7 -release -nocolor -nocffi -D HXCPP_ARMV7
-          CC=clang-22 CXX=clang++-22 haxelib run lime rebuild linux -arm64 -release -nocolor -nocffi -D HXCPP_ARM64
-      - name: Upload Artifact
-        uses: actions/upload-artifact@main
-        with:
-          name: LinuxArm-NDLL
-          path: |
-            ndll/LinuxArm/
-            !**/.gitignore
-            lime.png
-          if-no-files-found: error
-      - name: Upload Artifact
-        uses: actions/upload-artifact@main
-        with:
-          name: LinuxArm64-NDLL
-          path: |
-            ndll/LinuxArm64/
-            !**/.gitignore
-            lime.png
-          if-no-files-found: error
+
