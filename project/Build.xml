@@ -275,6 +275,8 @@
 			</section>
 
 			<compilerflag value="-DLIME_SDL" />
+			<!-- Match the SDL build: use Lime's full custom config in custom/sdl. -->
+			<compilerflag value="-DUSING_GENERATED_CONFIG_H" />
 			<compilerflag value="-DNATIVE_TOOLKIT_SDL_ANGLE" if="NATIVE_TOOLKIT_SDL_ANGLE" />
 			<compilerflag value="-D__IPHONEOS__" if="ios || tvos" />
 			<compilerflag value="-D__APPLETVOS__" if="tvos" />

@@ -111,6 +111,8 @@
 
         <compilerflag value="-DGL_GLEXT_PROTOTYPES" if="android || rpi" />
         <compilerflag value="-DHAVE_LIBC" />
+        <!-- Use Lime's full custom config in custom/sdl (first on the include path). -->
+        <compilerflag value="-DUSING_GENERATED_CONFIG_H" />
 
         <compilerflag value="-D__IPHONEOS__" if="ios || tvos" />
         <compilerflag value="-D__TVOS__" if="tvos" />
