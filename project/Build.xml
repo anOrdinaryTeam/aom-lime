@@ -245,12 +245,10 @@
 			<section unless="emscripten">
 
 				<compilerflag value="-I${NATIVE_TOOLKIT_PATH}/sdl/include/" />
-				<compilerflag value="-I${NATIVE_TOOLKIT_PATH}/sdl/include/configs/default/" unless="windows || mac || linux || rpi" />
-				<compilerflag value="-I${NATIVE_TOOLKIT_PATH}/sdl/include/configs/linux/" if="linux" unless="rpi" />
-				<compilerflag value="-I${NATIVE_TOOLKIT_PATH}/sdl/include/configs/windows/" if="windows" unless="winrt" />
-				<compilerflag value="-I${NATIVE_TOOLKIT_PATH}/sdl/include/configs/mac/" if="mac" />
-				<compilerflag value="-I${NATIVE_TOOLKIT_PATH}/sdl/include/configs/rpi/" if="rpi" />
-				<compilerflag value="-I${NATIVE_TOOLKIT_PATH}/sdl/include/configs/winrt/" if="winrt" />
+				<!-- Upstream SDL2 ships static per-target config headers; SDL_config.h
+				     auto-selects the right one (windows/macosx/iphoneos/android) from
+				     SDL_platform.h, so no configs/ include path is needed. -->
+				<compilerflag value="-I${NATIVE_TOOLKIT_PATH}/sdl/src/hidapi/hidapi/" />
 
 				<compilerflag value="-DHAVE_LIBC" />
 
@@ -376,7 +374,7 @@
 	<include name="lib/dr_libs-files.xml" if="LIME_DR_LIBS" />
 	<include name="lib/pixman/files.xml" />
 	<include name="lib/png/files.xml" />
-	<include name="lib/sdl/files.xml" />
+	<include name="lib/sdl-files.xml" />
 	<include name="lib/sdl_image-files.xml" if="LIME_SDL_IMAGE" />
 	<include name="lib/tinyfiledialogs/files.xml" />
 	<include name="lib/vorbis/files.xml" />
