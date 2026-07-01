@@ -252,10 +252,11 @@
 
 			<section unless="emscripten">
 
+				<!-- Lime's unified SDL2 config (custom/sdl/SDL_config.h) must come first
+				     so Lime and the SDL build share the exact same configuration. It
+				     dispatches to SDL2's per-target static configs. -->
+				<compilerflag value="-I${NATIVE_TOOLKIT_PATH}/custom/sdl" />
 				<compilerflag value="-I${NATIVE_TOOLKIT_PATH}/sdl/include/" />
-				<!-- Upstream SDL2 ships static per-target config headers; SDL_config.h
-				     auto-selects the right one (windows/macosx/iphoneos/android) from
-				     SDL_platform.h, so no configs/ include path is needed. -->
 				<compilerflag value="-I${NATIVE_TOOLKIT_PATH}/sdl/src/hidapi/hidapi/" />
 
 				<compilerflag value="-DHAVE_LIBC" />
