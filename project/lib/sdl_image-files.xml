@@ -1,0 +1,54 @@
+<xml>
+
+	<!-- SDL2_image (release-2.8.x) built with the bundled stb_image / nanosvg backend.
+	     No external image libraries are required: BMP/JPG/PNG are decoded through
+	     stb_image, SVG through the bundled nanosvg. The remaining IMG_*.c files
+	     (avif, jxl, tif, webp, ...) compile to empty translation units unless their
+	     matching LOAD_* flag is defined, so they are safe to list here. -->
+
+	<files id="native-toolkit-sdl_image">
+
+		<compilerflag value="-I${NATIVE_TOOLKIT_PATH}/sdl/include" />
+		<compilerflag value="-I${NATIVE_TOOLKIT_PATH}/sdl_image/include" />
+		<compilerflag value="-I${NATIVE_TOOLKIT_PATH}/sdl_image/src" />
+
+		<compilerflag value="-DUSE_STBIMAGE" />
+		<compilerflag value="-DLOAD_BMP" />
+		<compilerflag value="-DLOAD_GIF" />
+		<compilerflag value="-DLOAD_JPG" />
+		<compilerflag value="-DLOAD_LBM" />
+		<compilerflag value="-DLOAD_PCX" />
+		<compilerflag value="-DLOAD_PNG" />
+		<compilerflag value="-DLOAD_PNM" />
+		<compilerflag value="-DLOAD_QOI" />
+		<compilerflag value="-DLOAD_SVG" />
+		<compilerflag value="-DLOAD_TGA" />
+		<compilerflag value="-DLOAD_XCF" />
+		<compilerflag value="-DLOAD_XPM" />
+		<compilerflag value="-DLOAD_XV" />
+
+		<file name="${NATIVE_TOOLKIT_PATH}/sdl_image/src/IMG.c" />
+		<file name="${NATIVE_TOOLKIT_PATH}/sdl_image/src/IMG_avif.c" />
+		<file name="${NATIVE_TOOLKIT_PATH}/sdl_image/src/IMG_bmp.c" />
+		<file name="${NATIVE_TOOLKIT_PATH}/sdl_image/src/IMG_gif.c" />
+		<file name="${NATIVE_TOOLKIT_PATH}/sdl_image/src/IMG_jpg.c" />
+		<file name="${NATIVE_TOOLKIT_PATH}/sdl_image/src/IMG_jxl.c" />
+		<file name="${NATIVE_TOOLKIT_PATH}/sdl_image/src/IMG_lbm.c" />
+		<file name="${NATIVE_TOOLKIT_PATH}/sdl_image/src/IMG_pcx.c" />
+		<file name="${NATIVE_TOOLKIT_PATH}/sdl_image/src/IMG_png.c" />
+		<file name="${NATIVE_TOOLKIT_PATH}/sdl_image/src/IMG_pnm.c" />
+		<file name="${NATIVE_TOOLKIT_PATH}/sdl_image/src/IMG_qoi.c" />
+		<file name="${NATIVE_TOOLKIT_PATH}/sdl_image/src/IMG_stb.c" />
+		<file name="${NATIVE_TOOLKIT_PATH}/sdl_image/src/IMG_svg.c" />
+		<file name="${NATIVE_TOOLKIT_PATH}/sdl_image/src/IMG_tga.c" />
+		<file name="${NATIVE_TOOLKIT_PATH}/sdl_image/src/IMG_tif.c" />
+		<file name="${NATIVE_TOOLKIT_PATH}/sdl_image/src/IMG_webp.c" />
+		<file name="${NATIVE_TOOLKIT_PATH}/sdl_image/src/IMG_xcf.c" />
+		<file name="${NATIVE_TOOLKIT_PATH}/sdl_image/src/IMG_xpm.c" />
+		<file name="${NATIVE_TOOLKIT_PATH}/sdl_image/src/IMG_xv.c" />
+		<file name="${NATIVE_TOOLKIT_PATH}/sdl_image/src/IMG_xxx.c" />
+		<file name="${NATIVE_TOOLKIT_PATH}/sdl_image/src/IMG_WIC.c" if="windows" />
+
+	</files>
+
+</xml>
