@@ -26,9 +26,6 @@
 [submodule "project/lib/freetype"]
 	path = project/lib/freetype
 	url = https://github.com/openfl/libfreetype
-[submodule "project/lib/harfbuzz"]
-	path = project/lib/harfbuzz
-	url = https://github.com/openfl/libharfbuzz
 [submodule "project/lib/cairo"]
 	path = project/lib/cairo
 	url = https://github.com/openfl/libcairo
