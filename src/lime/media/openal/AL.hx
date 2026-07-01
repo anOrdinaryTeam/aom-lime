@@ -50,6 +50,25 @@ class AL
 	public static inline var FORMAT_MONO16:Int = 0x1101;
 	public static inline var FORMAT_STEREO8:Int = 0x1102;
 	public static inline var FORMAT_STEREO16:Int = 0x1103;
+	// Extended sample formats (AL_EXT_FLOAT32 / AL_EXT_MCFORMATS), useful for the
+	// F32 output of lime.media.AudioDecoder and multichannel playback.
+	public static inline var FORMAT_MONO_FLOAT32:Int = 0x10010;
+	public static inline var FORMAT_STEREO_FLOAT32:Int = 0x10011;
+	public static inline var FORMAT_QUAD8:Int = 0x1204;
+	public static inline var FORMAT_QUAD16:Int = 0x1205;
+	public static inline var FORMAT_QUAD32:Int = 0x1206;
+	public static inline var FORMAT_REAR8:Int = 0x1207;
+	public static inline var FORMAT_REAR16:Int = 0x1208;
+	public static inline var FORMAT_REAR32:Int = 0x1209;
+	public static inline var FORMAT_51CHN8:Int = 0x120A;
+	public static inline var FORMAT_51CHN16:Int = 0x120B;
+	public static inline var FORMAT_51CHN32:Int = 0x120C;
+	public static inline var FORMAT_61CHN8:Int = 0x120D;
+	public static inline var FORMAT_61CHN16:Int = 0x120E;
+	public static inline var FORMAT_61CHN32:Int = 0x120F;
+	public static inline var FORMAT_71CHN8:Int = 0x1210;
+	public static inline var FORMAT_71CHN16:Int = 0x1211;
+	public static inline var FORMAT_71CHN32:Int = 0x1212;
 	public static inline var FREQUENCY:Int = 0x2001;
 	public static inline var BITS:Int = 0x2002;
 	public static inline var CHANNELS:Int = 0x2003;
