@@ -1,6 +1,7 @@
 #include "SDLApplication.h"
 #include "SDLGamepad.h"
 #include "SDLJoystick.h"
+#include <cmath>
 #include <system/System.h>
 
 #ifdef HX_MACOS
@@ -25,6 +26,20 @@ namespace lime {
 
 	SDLApplication::SDLApplication () {
 
+		// Audio latency / behaviour hints (ported from Shadow, SDL2-compatible subset).
+		// Route audio as a game stream and keep it alive across app pauses on mobile.
+		SDL_SetHint (SDL_HINT_AUDIO_DEVICE_STREAM_ROLE, "Game");
+		SDL_SetHint (SDL_HINT_JOYSTICK_HIDAPI, "1");
+
+		#if defined(IPHONE)
+		SDL_SetHint (SDL_HINT_AUDIO_CATEGORY, "playback");
+		SDL_SetHint (SDL_HINT_IOS_HIDE_HOME_INDICATOR, "3");
+		#endif
+
+		#ifdef __ANDROID__
+		SDL_SetHint (SDL_HINT_ANDROID_BLOCK_ON_PAUSE, "1");
+		#endif
+
 		Uint32 initFlags = SDL_INIT_VIDEO | SDL_INIT_GAMECONTROLLER | SDL_INIT_TIMER | SDL_INIT_JOYSTICK;
 		#if defined(LIME_MOJOAL) || defined(LIME_OPENALSOFT)
 		initFlags |= SDL_INIT_AUDIO;
@@ -41,6 +56,10 @@ namespace lime {
 		currentApplication = this;
 
 		framePeriod = 1000.0 / 60.0;
+
+		framePerfTarget = SDL_GetPerformanceFrequency () / 60;
+		framePerfPrevious = SDL_GetPerformanceCounter ();
+		framePerfFrame = 0;
 
 		currentUpdate = 0;
 		lastUpdate = 0;
@@ -829,37 +848,72 @@ namespace lime {
 		if (frameRate > 0) {
 
 			framePeriod = 1000.0 / frameRate;
+			framePerfTarget = (Uint64) (SDL_GetPerformanceFrequency () / frameRate);
 
 		} else {
 
 			framePeriod = 1000.0;
+			framePerfTarget = 0;
 
 		}
 
 	}
 
 
-	static SDL_TimerID timerID = 0;
-	bool timerActive = false;
-	bool firstTime = true;
+	void SDLApplication::RenderFrame () {
 
-	Uint32 OnTimer (Uint32 interval, void *) {
+		// deltaTime in milliseconds, derived from the last measured frame and clamped
+		// like Shadow so a long stall doesn't produce a huge time step.
+		double deltaTime = (double) framePerfFrame * 1000.0 / (double) SDL_GetPerformanceFrequency ();
 
-		SDL_Event event;
-		SDL_UserEvent userevent;
-		userevent.type = SDL_USEREVENT;
-		userevent.code = 0;
-		userevent.data1 = NULL;
-		userevent.data2 = NULL;
-		event.type = SDL_USEREVENT;
-		event.user = userevent;
+		applicationEvent.type = UPDATE;
+		applicationEvent.deltaTime = std::fmin (deltaTime, 250.0);
+		ApplicationEvent::Dispatch (&applicationEvent);
 
-		timerActive = false;
-		timerID = 0;
+		renderEvent.type = RENDER;
+		RenderEvent::Dispatch (&renderEvent);
 
-		SDL_PushEvent (&event);
+	}
 
-		return 0;
+
+	void SDLApplication::FramePacer () {
+
+		// Measure the total duration of the current frame (update + render).
+		Uint64 freq = SDL_GetPerformanceFrequency ();
+		Uint64 current = SDL_GetPerformanceCounter ();
+		framePerfFrame = current - framePerfPrevious;
+		framePerfPrevious = current;
+
+		// If the frame was faster than the target, delay for the remainder to cap FPS.
+		// SDL2 has no SDL_DelayPrecise, so sleep the bulk (leaving ~1 ms) and spin the
+		// remainder for accurate wake-up.
+		if (framePerfTarget > 0 && framePerfFrame < framePerfTarget) {
+
+			Uint64 remaining = framePerfTarget - framePerfFrame;
+			Uint64 endTick = framePerfPrevious + remaining;
+			double remainingMS = (double) remaining * 1000.0 / (double) freq;
+
+			if (remainingMS > 2.0) {
+
+				#if defined(HX_MACOS) || defined(ANDROID)
+				System::GCEnterBlocking ();
+				#endif
+
+				SDL_Delay ((Uint32) (remainingMS - 1.0));
+
+				#if defined(HX_MACOS) || defined(ANDROID)
+				System::GCExitBlocking ();
+				#endif
+
+			}
+
+			while (SDL_GetPerformanceCounter () < endTick) {}
+
+			current = SDL_GetPerformanceCounter ();
+			framePerfFrame += current - framePerfPrevious;
+			framePerfPrevious = current;
+
+		}
 
 	}
 
@@ -867,57 +921,34 @@ namespace lime {
 	bool SDLApplication::Update () {
 
 		SDL_Event event;
-		event.type = -1;
 
-		#if (!defined (IPHONE) && !defined (EMSCRIPTEN))
-
-		if (active && (firstTime || WaitEvent (&event))) {
-
-			firstTime = false;
+		while (active && SDL_PollEvent (&event)) {
 
 			HandleEvent (&event);
-			event.type = -1;
+
 			if (!active)
 				return active;
 
-		#endif
+		}
 
-			while (SDL_PollEvent (&event)) {
+		if (!inBackground) {
 
-				HandleEvent (&event);
-				event.type = -1;
-				if (!active)
-					return active;
+			RenderFrame ();
 
-			}
+		}
 
-			currentUpdate = SDL_GetTicks ();
+		#if (!defined (IPHONE) && !defined (EMSCRIPTEN))
 
-		#if defined (IPHONE) || defined (EMSCRIPTEN)
-
-			if (currentUpdate >= nextUpdate) {
-
-				event.type = SDL_USEREVENT;
-				HandleEvent (&event);
-				event.type = -1;
-
-			}
+		// On desktop/Android, FramePacer caps the frame rate precisely.
+		FramePacer ();
 
 		#else
 
-			if (currentUpdate >= nextUpdate) {
-
-				if (timerActive) SDL_RemoveTimer (timerID);
-				OnTimer (0, 0);
-
-			} else if (!timerActive) {
-
-				timerActive = true;
-				timerID = SDL_AddTimer (nextUpdate - currentUpdate, OnTimer, 0);
-
-			}
-
-		}
+		// On iOS/Emscripten the platform animation callback drives pacing; just keep
+		// the frame duration measured so RenderFrame's deltaTime stays correct.
+		Uint64 current = SDL_GetPerformanceCounter ();
+		framePerfFrame = current - framePerfPrevious;
+		framePerfPrevious = current;
 
 		#endif
 

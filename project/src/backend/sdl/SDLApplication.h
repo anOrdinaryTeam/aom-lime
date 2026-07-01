@@ -51,6 +51,8 @@ namespace lime {
 			void ProcessTouchEvent (SDL_Event* event);
 			void ProcessWindowEvent (SDL_Event* event);
 			int WaitEvent (SDL_Event* event);
+			void RenderFrame ();
+			void FramePacer ();
 
 			static void UpdateFrame ();
 			static void UpdateFrame (void*);
@@ -62,6 +64,11 @@ namespace lime {
 			ClipboardEvent clipboardEvent;
 			Uint32 currentUpdate;
 			double framePeriod;
+			// High-resolution frame pacing (SDL_GetPerformanceCounter ticks), ported
+			// from Shadow's nanosecond FramePacer and adapted to SDL2.
+			Uint64 framePerfPrevious;
+			Uint64 framePerfTarget;
+			Uint64 framePerfFrame;
 			DropEvent dropEvent;
 			GamepadEvent gamepadEvent;
 			JoystickEvent joystickEvent;
