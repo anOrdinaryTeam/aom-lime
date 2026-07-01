@@ -67,7 +67,7 @@ namespace lime {
 
 
 	#if defined (HX_WINDOWS) && !defined (HX_WINRT)
-	std::wstring* GetWMIValue (BSTR query, BSTR field) {
+	std::wstring* GetWMIValue (BSTR query, LPCWSTR field) {
 
 		HRESULT hres = 0;
 		IWbemLocator *pLoc = NULL;
