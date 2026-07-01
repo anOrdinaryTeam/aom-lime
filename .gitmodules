@@ -4,9 +4,6 @@
 [submodule "project/lib/sdl"]
 	path = project/lib/sdl
 	url = https://github.com/openfl/libsdl
-[submodule "project/lib/openal"]
-	path = project/lib/openal
-	url = https://github.com/openfl/libopenal
 [submodule "project/lib/curl"]
 	path = project/lib/curl
 	url = https://github.com/curl/curl

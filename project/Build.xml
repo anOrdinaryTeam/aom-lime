@@ -370,10 +370,10 @@
 	<include name="lib/mojoal/files.xml" />
 	<include name="lib/neko/files.xml" />
 	<include name="lib/ogg/files.xml" />
+	<include name="lib/openal-files.xml" if="LIME_OPENALSOFT" />
 	<include name="lib/opus-files.xml" if="LIME_OPUS" />
 	<include name="lib/opusfile-files.xml" if="LIME_OPUS" />
 	<include name="lib/dr_libs-files.xml" if="LIME_DR_LIBS" />
-	<include name="lib/openal/files.xml" />
 	<include name="lib/pixman/files.xml" />
 	<include name="lib/png/files.xml" />
 	<include name="lib/sdl/files.xml" />
@@ -446,6 +446,7 @@
 				<lib name="shell32.lib" />
 				<lib name="comdlg32.lib" />
 				<lib name="setupapi.lib" />
+				<lib name="avrt.lib" if="LIME_OPENALSOFT" />
 
 				<lib name="usp10.lib" if="LIME_HARFBUZZ" />
 				<lib name="rpcrt4.lib" if="LIME_HARFBUZZ" />
