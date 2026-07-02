@@ -50,11 +50,10 @@
 [submodule "project/lib/hashlink"]
 	path = project/lib/hashlink
 	url = https://github.com/HaxeFoundation/hashlink
-  
 [submodule "project/lib/sdl_image"]
 	path = project/lib/sdl_image
 	url = https://github.com/libsdl-org/SDL_image
-	branch = release-2.8.x
+	branch = SDL2
 [submodule "project/lib/openal"]
 	path = project/lib/openal
 	url = https://github.com/kcat/openal-soft
