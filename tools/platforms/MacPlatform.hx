@@ -383,24 +383,33 @@ class MacPlatform extends PlatformTarget
 
 		switch (System.hostArchitecture)
 		{
-			case X64:
+			case X64, ARM64:
+				var arch = System.hostArchitecture == ARM64 ? "-DHXCPP_ARM64" : "-DHXCPP_M64";
+
+				if (targetFlags.exists("64") || targetFlags.exists("x86_64"))
+				{
+					arch = "-DHXCPP_M64";
+				}
+				else if (targetFlags.exists("arm64"))
+				{
+					arch = "-DHXCPP_ARM64";
+				}
+				else if (targetFlags.exists("32"))
+				{
+					arch = "-DHXCPP_M32";
+				}
+
 				if (targetFlags.exists("hl"))
 				{
 					// TODO: Support single binary
-					commands.push(["-Dmac", "-DHXCPP_CLANG", "-DHXCPP_M64", "-Dhashlink"]);
-				}
-				else if (!targetFlags.exists("32"))
-				{
-					commands.push(["-Dmac", "-DHXCPP_CLANG", "-DHXCPP_M64"]);
+					commands.push(["-Dmac", "-DHXCPP_CLANG", arch, "-Dhashlink"]);
 				}
 				else
 				{
-					commands.push(["-Dmac", "-DHXCPP_CLANG", "-DHXCPP_M32"]);
+					commands.push(["-Dmac", "-DHXCPP_CLANG", arch]);
 				}
 			case X86:
 				commands.push(["-Dmac", "-DHXCPP_CLANG", "-DHXCPP_M32"]);
-			case ARM64:
-				commands.push(["-Dmac", "-DHXCPP_CLANG", "-DHXCPP_ARM64"]);
 			default:
 		}
 
@@ -549,6 +558,6 @@ class MacPlatform extends PlatformTarget
 
 	private inline function get_dirSuffix():String
 	{
-		return targetArchitecture == X64 ? "64" : "";
+		return targetArchitecture == X64 ? "64" : targetArchitecture == ARM64 ? "Arm64" : "";
 	}
 }

@@ -392,7 +392,7 @@
 	<include name="lib/opus-files.xml" if="LIME_OPUS" />
 	<include name="lib/opusfile-files.xml" if="LIME_OPUS" />
 	<include name="lib/dr_libs-files.xml" if="LIME_DR_LIBS" />
-	<include name="lib/pixman/files.xml" />
+	<include name="lib/pixman-files.xml" />
 	<include name="lib/sdl-files.xml" />
 	<include name="lib/sdl_image-files.xml" if="LIME_SDL_IMAGE" />
 	<include name="lib/tinyfiledialogs/files.xml" />
