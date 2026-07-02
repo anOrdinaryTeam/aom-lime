@@ -120,6 +120,9 @@
 
         <section if="linux">
 
+           <compilerflag value="-include" />
+            <compilerflag value="${NATIVE_TOOLKIT_PATH}/custom/sdl/include/SDL_config.h" />
+
             <compilerflag value="-DHAVE_LINUX_VERSION_H" />
             <compilerflag value="-D_REENTRANT" />
             <compilerflag value="-mmmx" unless="rpi" />
