@@ -7,7 +7,7 @@
 #include "SDL_platform.h"
 
 /* ===== common to all supported targets ===== */
-#if defined(__WIN32__) || defined(__WINGDK__) || defined(__WINRT__) || defined(__MACOSX__) || defined(__IPHONEOS__) || defined(__ANDROID__) || defined(__EMSCRIPTEN__)
+#if defined(__WIN32__) || defined(__WINGDK__) || defined(__WINRT__) || defined(__MACOSX__) || defined(__IPHONEOS__) || defined(__ANDROID__) || defined(__EMSCRIPTEN__) || defined(__LINUX__)
 #define HAVE_ABS 1
 #define HAVE_ACOS 1
 #define HAVE_ACOSF 1
@@ -80,6 +80,35 @@
 #define SDL_VIDEO_OPENGL_ES2 1
 #define SDL_VIDEO_RENDER_OGL_ES2 1
 #define STDC_HEADERS 1
+#endif
+
+/* ===== common to POSIX targets (mac / ios / android / emscripten / linux) ===== */
+#if defined(__MACOSX__) || defined(__IPHONEOS__) || defined(__ANDROID__) || defined(__EMSCRIPTEN__) || defined(__LINUX__)
+#define HAVE_ALLOCA_H 1
+#define HAVE_INTTYPES_H 1
+#define HAVE_SYS_TYPES_H 1
+#define HAVE_GCC_ATOMICS 1
+#define HAVE_DLOPEN 1
+#define HAVE_GETENV 1
+#define HAVE_SETENV 1
+#define HAVE_PUTENV 1
+#define HAVE_UNSETENV 1
+#define HAVE_BCOPY 1
+#define HAVE_STRTOK_R 1
+#define HAVE_STRTOLL 1
+#define HAVE_STRTOULL 1
+#define HAVE_STRCASECMP 1
+#define HAVE_STRNCASECMP 1
+#define HAVE_VSSCANF 1
+#define HAVE_VSNPRINTF 1
+#define HAVE_SETJMP 1
+#define HAVE_SIGACTION 1
+#define HAVE_NANOSLEEP 1
+#define HAVE_SYSCONF 1
+#define HAVE_COPYSIGN 1
+#define HAVE_COPYSIGNF 1
+#define HAVE_SCALBN 1
+#define HAVE_SCALBNF 1
 #endif
 
 #if defined(__WIN32__) || defined(__WINGDK__)
@@ -345,36 +374,12 @@ typedef unsigned int uintptr_t;
 #else
     #define SIZEOF_VOIDP 4
 #endif
-#define HAVE_ALLOCA_H       1
 #define HAVE_FLOAT_H    1
-#define HAVE_INTTYPES_H 1
-#define HAVE_SYS_TYPES_H    1
 #define HAVE_LIBUNWIND_H    1
-#define HAVE_DLOPEN 1
-#define HAVE_GETENV 1
-#define HAVE_SETENV 1
-#define HAVE_PUTENV 1
-#define HAVE_UNSETENV   1
-#define HAVE_BCOPY  1
 #define HAVE_STRLCPY    1
 #define HAVE_STRLCAT    1
-#define HAVE_STRTOK_R 1
-#define HAVE_STRTOLL    1
-#define HAVE_STRTOULL   1
-#define HAVE_STRCASECMP 1
-#define HAVE_STRNCASECMP 1
 #define HAVE_STRCASESTR 1
-#define HAVE_VSSCANF 1
-#define HAVE_VSNPRINTF  1
 #define HAVE_M_PI   1
-#define HAVE_COPYSIGN   1
-#define HAVE_COPYSIGNF  1
-#define HAVE_SCALBN 1
-#define HAVE_SCALBNF    1
-#define HAVE_SIGACTION  1
-#define HAVE_SETJMP 1
-#define HAVE_NANOSLEEP  1
-#define HAVE_SYSCONF    1
 #define HAVE_SYSCTLBYNAME 1
 #if defined(__has_include) && (defined(__i386__) || defined(__x86_64))
 # if __has_include(<immintrin.h>)
@@ -384,7 +389,6 @@ typedef unsigned int uintptr_t;
 #if (MAC_OS_X_VERSION_MAX_ALLOWED >= 1070)
 #define HAVE_O_CLOEXEC 1
 #endif
-#define HAVE_GCC_ATOMICS 1
 #define SDL_AUDIO_DRIVER_COREAUDIO  1
 #define SDL_AUDIO_DRIVER_DISK   1
 #define SDL_JOYSTICK_HIDAPI 1
@@ -478,36 +482,10 @@ typedef unsigned int uintptr_t;
 #else
 #define SIZEOF_VOIDP 4
 #endif
-#define HAVE_GCC_ATOMICS    1
-#define HAVE_ALLOCA_H       1
-#define HAVE_INTTYPES_H 1
-#define HAVE_SYS_TYPES_H    1
-#define HAVE_DLOPEN 1
-#define HAVE_GETENV 1
-#define HAVE_SETENV 1
-#define HAVE_PUTENV 1
-#define HAVE_SETENV 1
-#define HAVE_UNSETENV   1
-#define HAVE_BCOPY  1
 #define HAVE_STRLCPY    1
 #define HAVE_STRLCAT    1
-#define HAVE_STRTOK_R 1
-#define HAVE_STRTOLL    1
-#define HAVE_STRTOULL   1
-#define HAVE_STRCASECMP 1
-#define HAVE_STRNCASECMP 1
 #define HAVE_STRCASESTR 1
-#define HAVE_VSSCANF 1
-#define HAVE_VSNPRINTF  1
 #define HAVE_M_PI   1
-#define HAVE_COPYSIGN   1
-#define HAVE_COPYSIGNF  1
-#define HAVE_SCALBN 1
-#define HAVE_SCALBNF    1
-#define HAVE_SIGACTION  1
-#define HAVE_SETJMP 1
-#define HAVE_NANOSLEEP  1
-#define HAVE_SYSCONF    1
 #define HAVE_SYSCTLBYNAME 1
 #define HAVE_O_CLOEXEC 1
 #define SDL_AUDIO_DRIVER_COREAUDIO 1
@@ -552,35 +530,9 @@ typedef unsigned int uintptr_t;
 
 #elif defined(__ANDROID__)
 #include <stdarg.h>
-#define HAVE_GCC_ATOMICS    1
-#define HAVE_ALLOCA_H       1
-#define HAVE_INTTYPES_H 1
-#define HAVE_SYS_TYPES_H    1
-#define HAVE_DLOPEN 1
-#define HAVE_GETENV 1
-#define HAVE_SETENV 1
-#define HAVE_PUTENV 1
-#define HAVE_SETENV 1
-#define HAVE_UNSETENV   1
-#define HAVE_BCOPY  1
 #define HAVE_STRLCPY    1
 #define HAVE_STRLCAT    1
-#define HAVE_STRTOK_R 1
-#define HAVE_STRTOLL    1
-#define HAVE_STRTOULL   1
-#define HAVE_STRCASECMP 1
-#define HAVE_STRNCASECMP 1
 #define HAVE_STRCASESTR 1
-#define HAVE_VSSCANF 1
-#define HAVE_VSNPRINTF  1
-#define HAVE_COPYSIGN   1
-#define HAVE_COPYSIGNF  1
-#define HAVE_SCALBN 1
-#define HAVE_SCALBNF    1
-#define HAVE_SIGACTION 1
-#define HAVE_SETJMP 1
-#define HAVE_NANOSLEEP  1
-#define HAVE_SYSCONF    1
 #define HAVE_CLOCK_GETTIME  1
 #ifdef __LP64__
 #define SIZEOF_VOIDP 8
@@ -620,23 +572,13 @@ typedef unsigned int uintptr_t;
 #else
 #define SIZEOF_VOIDP 4
 #endif
-#define HAVE_GCC_ATOMICS 1
-#define HAVE_ALLOCA_H 1
 #define HAVE_ICONV_H 1
-#define HAVE_INTTYPES_H 1
 #define HAVE_MALLOC_H 1
 #define HAVE_MEMORY_H 1
 #define HAVE_STDARG_H 1
 #define HAVE_STDLIB_H 1
 #define HAVE_STRINGS_H 1
-#define HAVE_SYS_TYPES_H 1
 #define HAVE_WCHAR_H 1
-#define HAVE_DLOPEN 1
-#define HAVE_GETENV 1
-#define HAVE_SETENV 1
-#define HAVE_PUTENV 1
-#define HAVE_UNSETENV 1
-#define HAVE_BCOPY 1
 #define HAVE_WCSLEN 1
 #define HAVE_WCSDUP 1
 #define HAVE_WCSSTR 1
@@ -646,26 +588,11 @@ typedef unsigned int uintptr_t;
 #define HAVE_WCSNCASECMP 1
 #define HAVE_STRLCPY 1
 #define HAVE_STRLCAT 1
-#define HAVE_STRTOK_R 1
-#define HAVE_STRTOLL 1
-#define HAVE_STRTOULL 1
-#define HAVE_STRCASECMP 1
-#define HAVE_STRNCASECMP 1
 #define HAVE_SSCANF 1
-#define HAVE_VSSCANF 1
-#define HAVE_VSNPRINTF 1
 #define HAVE_M_PI 1
-#define HAVE_COPYSIGN 1
-#define HAVE_COPYSIGNF 1
-#define HAVE_SCALBN 1
-#define HAVE_SCALBNF 1
 #define HAVE_FSEEKO 1
 #define HAVE_FSEEKO64 1
-#define HAVE_SIGACTION 1
 #define HAVE_SA_SIGACTION 1
-#define HAVE_SETJMP 1
-#define HAVE_NANOSLEEP 1
-#define HAVE_SYSCONF 1
 #define HAVE_CLOCK_GETTIME 1
 #define HAVE_MPROTECT 1
 #define HAVE_ICONV 1
@@ -689,6 +616,105 @@ typedef unsigned int uintptr_t;
 #define SDL_VIDEO_OPENGL_EGL 1
 #define SDL_POWER_EMSCRIPTEN 1
 #define SDL_FILESYSTEM_EMSCRIPTEN 1
+
+#elif defined(__LINUX__)
+/* Desktop Linux (glibc). Drivers are limited to the source files compiled in
+   lib/sdl-files.xml's <section if="linux">: X11 video, ALSA + PulseAudio audio
+   (dynamically loaded), evdev/udev/dbus, linux joystick/haptic. Do NOT enable a
+   driver whose .c is not in that list (e.g. PipeWire/JACK/Wayland) -- SDL_audio.c /
+   SDL_video.c reference the bootstrap symbol and it would fail to link. */
+#ifdef __LP64__
+#define SIZEOF_VOIDP 8
+
+#else
+#define SIZEOF_VOIDP 4
+#endif
+#define HAVE_LIBC 1
+#define HAVE_FLOAT_H 1
+#define HAVE_ICONV_H 1
+#define HAVE_MALLOC_H 1
+#define HAVE_MEMORY_H 1
+#define HAVE_STDARG_H 1
+#define HAVE_STDDEF_H 1
+#define HAVE_STDLIB_H 1
+#define HAVE_STRINGS_H 1
+#define HAVE_WCHAR_H 1
+#define HAVE_WCSLEN 1
+#define HAVE_WCSDUP 1
+#define HAVE_WCSSTR 1
+#define HAVE_WCSCMP 1
+#define HAVE_WCSNCMP 1
+#define HAVE_WCSCASECMP 1
+#define HAVE_WCSNCASECMP 1
+#define HAVE_STRCASESTR 1
+#define HAVE_SSCANF 1
+#define HAVE_M_PI 1
+#define HAVE_FOPEN64 1
+#define HAVE_FSEEKO 1
+#define HAVE_FSEEKO64 1
+#define HAVE_SA_SIGACTION 1
+#define HAVE_CLOCK_GETTIME 1
+#define HAVE_GETPAGESIZE 1
+#define HAVE_MPROTECT 1
+#define HAVE_ICONV 1
+#define HAVE_POLL 1
+#define HAVE_O_CLOEXEC 1
+#define HAVE_LINUX_INPUT_H 1
+#define HAVE_DBUS_DBUS_H 1
+#define HAVE_LIBUDEV_H 1
+#if defined(__has_include) && (defined(__i386__) || defined(__x86_64))
+# if __has_include(<immintrin.h>)
+#   define HAVE_IMMINTRIN_H 1
+# endif
+#endif
+/* input backends (sources: core/linux/SDL_evdev*, SDL_udev, SDL_dbus) */
+#define SDL_INPUT_LINUXEV 1
+#define SDL_INPUT_LINUXKD 1
+#define SDL_USE_LIBUDEV 1
+/* audio: only ALSA + PulseAudio are compiled, both dlopen'd at runtime */
+#define SDL_AUDIO_DRIVER_ALSA 1
+#define SDL_AUDIO_DRIVER_ALSA_DYNAMIC "libasound.so.2"
+#define SDL_AUDIO_DRIVER_PULSEAUDIO 1
+#define SDL_AUDIO_DRIVER_PULSEAUDIO_DYNAMIC "libpulse-simple.so.0"
+#define SDL_AUDIO_DRIVER_DISK 1
+/* input devices */
+#define SDL_JOYSTICK_LINUX 1
+#define SDL_JOYSTICK_VIRTUAL 1
+#define SDL_HAPTIC_LINUX 1
+#define SDL_HIDAPI_DISABLED 1
+#define SDL_SENSOR_DUMMY 1
+/* threads / timers / loaders / power / filesystem */
+#define SDL_LOADSO_DLOPEN 1
+#define SDL_THREAD_PTHREAD 1
+#define SDL_THREAD_PTHREAD_RECURSIVE_MUTEX 1
+#define SDL_TIMER_UNIX 1
+#define SDL_POWER_LINUX 1
+#define SDL_FILESYSTEM_UNIX 1
+/* video: X11 (dynamically loaded) + dummy fallback */
+#define SDL_VIDEO_DRIVER_DUMMY 1
+#define SDL_VIDEO_DRIVER_X11 1
+#define SDL_VIDEO_DRIVER_X11_DYNAMIC "libX11.so.6"
+#define SDL_VIDEO_DRIVER_X11_DYNAMIC_XEXT "libXext.so.6"
+#define SDL_VIDEO_DRIVER_X11_DYNAMIC_XCURSOR "libXcursor.so.1"
+#define SDL_VIDEO_DRIVER_X11_DYNAMIC_XINPUT2 "libXi.so.6"
+#define SDL_VIDEO_DRIVER_X11_DYNAMIC_XRANDR "libXrandr.so.2"
+#define SDL_VIDEO_DRIVER_X11_DYNAMIC_XSS "libXss.so.1"
+#define SDL_VIDEO_DRIVER_X11_XCURSOR 1
+#define SDL_VIDEO_DRIVER_X11_XDBE 1
+#define SDL_VIDEO_DRIVER_X11_XINPUT2 1
+#define SDL_VIDEO_DRIVER_X11_XINPUT2_SUPPORTS_MULTITOUCH 1
+#define SDL_VIDEO_DRIVER_X11_XRANDR 1
+#define SDL_VIDEO_DRIVER_X11_XSCRNSAVER 1
+#define SDL_VIDEO_DRIVER_X11_XSHAPE 1
+#define SDL_VIDEO_DRIVER_X11_SUPPORTS_GENERIC_EVENTS 1
+#define SDL_VIDEO_DRIVER_X11_HAS_XKBKEYCODETOKEYSYM 1
+/* gl / egl / vulkan (SDL_VIDEO_OPENGL_ES2 + RENDER_OGL_ES2 come from common block) */
+#define SDL_VIDEO_OPENGL 1
+#define SDL_VIDEO_OPENGL_EGL 1
+#define SDL_VIDEO_OPENGL_GLX 1
+#define SDL_VIDEO_RENDER_OGL 1
+#define SDL_VIDEO_VULKAN 1
+#define SDL_ASSEMBLY_ROUTINES 1
 
 #else
 #define HAVE_STDARG_H   1

@@ -12,7 +12,7 @@ namespace lime {
 
 	float Display::GetDPI () {
 
-		#ifndef OBJC_ARC
+		#if !__has_feature(objc_arc)
 		NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
 		#endif
 
@@ -26,7 +26,7 @@ namespace lime {
 
 		}
 
-		#ifndef OBJC_ARC
+		#if !__has_feature(objc_arc)
 		[pool drain];
 		#endif
 

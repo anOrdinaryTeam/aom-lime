@@ -12,7 +12,9 @@ namespace lime {
 
 	std::string* Locale::GetSystemLocale () {
 
-		#ifndef OBJC_ARC
+		// NSAutoreleasePool is unavailable under ARC (Xcode 26 compiles .mm with ARC by default).
+		// __has_feature(objc_arc) is the correct probe -- the old OBJC_ARC guard was never defined.
+		#if !__has_feature(objc_arc)
 		NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
 		#endif
 
@@ -42,7 +44,7 @@ namespace lime {
 
 		}
 
-		#ifndef OBJC_ARC
+		#if !__has_feature(objc_arc)
 		[pool drain];
 		#endif
 
