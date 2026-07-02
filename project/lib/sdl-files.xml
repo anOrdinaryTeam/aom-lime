@@ -125,6 +125,7 @@
 
             <compilerflag value="-I/usr/include/dbus-1.0" />
             <compilerflag value="-I/usr/lib/x86_64-linux-gnu/dbus-1.0/include" if="HXCPP_M64" />
+            <compilerflag value="-I/usr/lib/i686-linux-gnu/dbus-1.0/include" unless="HXCPP_M32" />
             <compilerflag value="-I/usr/lib/i386-linux-gnu/dbus-1.0/include" unless="HXCPP_M32" />
 
             <compilerflag value="-DHAVE_LINUX_VERSION_H" />
