@@ -778,6 +778,17 @@ namespace lime {
 	}
 
 
+	bool SDLWindow::SetVSync (bool vsync) {
+
+		// Toggle on the existing GL context (same as Shadow's SetVSyncMode). Do NOT recreate the
+		// context here -- that causes a visible screen flicker.
+		SDL_GL_SetSwapInterval (vsync ? 1 : 0);
+
+		return vsync;
+
+	}
+
+
 	void SDLWindow::SetCursor (Cursor cursor) {
 
 		if (cursor != currentCursor) {

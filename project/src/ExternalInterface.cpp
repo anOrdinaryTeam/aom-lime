@@ -3656,6 +3656,22 @@ namespace lime {
 	}
 
 
+	bool lime_window_set_vsync (value window, bool vsync) {
+
+		Window* targetWindow = (Window*)val_data (window);
+		return targetWindow->SetVSync (vsync);
+
+	}
+
+
+	HL_PRIM bool HL_NAME(hl_window_set_vsync) (HL_CFFIPointer* window, bool vsync) {
+
+		Window* targetWindow = (Window*)window->ptr;
+		return targetWindow->SetVSync (vsync);
+
+	}
+
+
 	void lime_window_set_cursor (value window, int cursor) {
 
 		Window* targetWindow = (Window*)val_data (window);
@@ -4483,6 +4499,7 @@ namespace lime {
 	DEFINE_PRIME3v (lime_window_set_minimum_size);
 	DEFINE_PRIME3v (lime_window_set_maximum_size);
 	DEFINE_PRIME2 (lime_window_set_borderless);
+	DEFINE_PRIME2 (lime_window_set_vsync);
 	DEFINE_PRIME2v (lime_window_set_cursor);
 	DEFINE_PRIME2 (lime_window_set_display_mode);
 	DEFINE_PRIME2 (lime_window_set_fullscreen);
@@ -4681,6 +4698,7 @@ namespace lime {
 	DEFINE_HL_PRIM (_VOID, hl_window_set_minimum_size, _TCFFIPOINTER _I32 _I32);
 	DEFINE_HL_PRIM (_VOID, hl_window_set_maximum_size, _TCFFIPOINTER _I32 _I32);
 	DEFINE_HL_PRIM (_BOOL, hl_window_set_borderless, _TCFFIPOINTER _BOOL);
+	DEFINE_HL_PRIM (_BOOL, hl_window_set_vsync, _TCFFIPOINTER _BOOL);
 	DEFINE_HL_PRIM (_VOID, hl_window_set_cursor, _TCFFIPOINTER _I32);
 	DEFINE_HL_PRIM (_VOID, hl_window_set_display_mode, _TCFFIPOINTER _TDISPLAYMODE _TDISPLAYMODE);
 	DEFINE_HL_PRIM (_BOOL, hl_window_set_fullscreen, _TCFFIPOINTER _BOOL);

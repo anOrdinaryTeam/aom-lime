@@ -2,6 +2,7 @@
 #include "SDLGamepad.h"
 #include "SDLJoystick.h"
 #include <cmath>
+#include <cstdio>
 #include <system/System.h>
 
 #ifdef HX_MACOS
@@ -25,6 +26,13 @@ namespace lime {
 
 
 	SDLApplication::SDLApplication () {
+
+		// When stdout/stderr aren't a real TTY (redirected, or after SDL attaches its own
+		// console/subsystem), the CRT switches them to fully block-buffered, so traces show up
+		// late or get lost on crash. Force unbuffered here. Note: on the MSVC CRT _IOLBF is
+		// silently treated as _IOFBF, so line-buffering is not an option -- use _IONBF.
+		setvbuf (stdout, NULL, _IONBF, 0);
+		setvbuf (stderr, NULL, _IONBF, 0);
 
 		// Audio latency / behaviour hints (ported from Shadow, SDL2-compatible subset).
 		// Route audio as a game stream and keep it alive across app pauses on mobile.

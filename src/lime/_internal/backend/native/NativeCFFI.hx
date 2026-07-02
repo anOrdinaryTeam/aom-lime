@@ -329,6 +329,8 @@ class NativeCFFI
 
 	@:cffi private static function lime_window_set_borderless(handle:Dynamic, borderless:Bool):Bool;
 
+	@:cffi private static function lime_window_set_vsync(handle:Dynamic, vsync:Bool):Bool;
+
 	@:cffi private static function lime_window_set_cursor(handle:Dynamic, cursor:Int):Void;
 
 	@:cffi private static function lime_window_set_display_mode(handle:Dynamic, displayMode:Dynamic):Dynamic;
@@ -610,6 +612,8 @@ class NativeCFFI
 		false));
 	private static var lime_window_set_borderless = new cpp.Callable<cpp.Object->Bool->Bool>(cpp.Prime._loadPrime("lime", "lime_window_set_borderless", "obb",
 		false));
+	private static var lime_window_set_vsync = new cpp.Callable<cpp.Object->Bool->Bool>(cpp.Prime._loadPrime("lime", "lime_window_set_vsync", "obb",
+		false));
 	private static var lime_window_set_cursor = new cpp.Callable<cpp.Object->Int->cpp.Void>(cpp.Prime._loadPrime("lime", "lime_window_set_cursor", "oiv",
 		false));
 	private static var lime_window_set_display_mode = new cpp.Callable<cpp.Object->cpp.Object->cpp.Object>(cpp.Prime._loadPrime("lime",
@@ -800,6 +804,7 @@ class NativeCFFI
 	private static var lime_window_set_minimum_size = CFFI.load("lime", "lime_window_set_minimum_size", 3);
 	private static var lime_window_set_maximum_size = CFFI.load("lime", "lime_window_set_maximum_size", 3);
 	private static var lime_window_set_borderless = CFFI.load("lime", "lime_window_set_borderless", 2);
+	private static var lime_window_set_vsync = CFFI.load("lime", "lime_window_set_vsync", 2);
 	private static var lime_window_set_cursor = CFFI.load("lime", "lime_window_set_cursor", 2);
 	private static var lime_window_set_display_mode = CFFI.load("lime", "lime_window_set_display_mode", 2);
 	private static var lime_window_set_fullscreen = CFFI.load("lime", "lime_window_set_fullscreen", 2);
@@ -1384,6 +1389,11 @@ class NativeCFFI
 	@:hlNative("lime", "hl_window_set_maximum_size") private static function lime_window_set_maximum_size(handle:CFFIPointer, width:Int, height:Int):Void {}
 
 	@:hlNative("lime", "hl_window_set_borderless") private static function lime_window_set_borderless(handle:CFFIPointer, borderless:Bool):Bool
+	{
+		return false;
+	}
+
+	@:hlNative("lime", "hl_window_set_vsync") private static function lime_window_set_vsync(handle:CFFIPointer, vsync:Bool):Bool
 	{
 		return false;
 	}

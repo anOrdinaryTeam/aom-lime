@@ -30,6 +30,7 @@ class Window
 {
 	public var application(default, null):Application;
 	public var borderless(get, set):Bool;
+	public var vsync(get, set):Bool;
 	public var context(default, null):RenderContext;
 	public var cursor(get, set):MouseCursor;
 	public var display(get, null):Display;
@@ -108,6 +109,7 @@ class Window
 	@:noCompletion private var __attributes:WindowAttributes;
 	@:noCompletion private var __backend:WindowBackend;
 	@:noCompletion private var __borderless:Bool;
+	@:noCompletion private var __vsync:Bool;
 	@:noCompletion private var __fullscreen:Bool;
 	@:noCompletion private var __height:Int;
 	@:noCompletion private var __hidden:Bool;
@@ -132,6 +134,7 @@ class Window
 		untyped Object.defineProperties(p,
 			{
 				"borderless": {get: p.get_borderless, set: p.set_borderless},
+				"vsync": {get: p.get_vsync, set: p.set_vsync},
 				"cursor": {get: p.get_cursor, set: p.set_cursor},
 				"display": {get: p.get_display},
 				"displayMode": {get: p.get_displayMode, set: p.set_displayMode},
@@ -509,6 +512,16 @@ class Window
 	@:noCompletion private function set_borderless(value:Bool):Bool
 	{
 		return __borderless = __backend.setBorderless(value);
+	}
+
+	@:noCompletion private inline function get_vsync():Bool
+	{
+		return __vsync;
+	}
+
+	@:noCompletion private function set_vsync(value:Bool):Bool
+	{
+		return __vsync = __backend.setVSync(value);
 	}
 
 	@:noCompletion private inline function get_frameRate():Float

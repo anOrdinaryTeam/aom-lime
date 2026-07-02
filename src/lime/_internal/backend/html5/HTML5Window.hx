@@ -975,6 +975,12 @@ class HTML5Window
 		return value;
 	}
 
+	public function setVSync(value:Bool):Bool
+	{
+		// vsync is driven by requestAnimationFrame on html5; nothing to toggle.
+		return value;
+	}
+
 	public function setClipboard(value:String):Void
 	{
 		if (textArea == null)
