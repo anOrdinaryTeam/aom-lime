@@ -255,6 +255,8 @@
 				<compilerflag value="-I${NATIVE_TOOLKIT_PATH}/sdl/include/" />
 				<compilerflag value="-I${NATIVE_TOOLKIT_PATH}/custom/sdl/include" />
 				<compilerflag value="-I${NATIVE_TOOLKIT_PATH}/sdl/src/hidapi/hidapi/" />
+				<compilerflag value="-include" if="linux" />
+				<compilerflag value="${NATIVE_TOOLKIT_PATH}/custom/sdl/include/SDL_config.h" if="linux" />
 
 				<compilerflag value="-DHAVE_LIBC" />
 
@@ -370,6 +372,13 @@
 	<include name="lib/efsw/files.xml" />
 	<include name="lib/faudio/files.xml" if="LIME_FAUDIO" />
 	<include name="lib/freetype/files.xml" />
+	<!-- Re-open the freetype file group to force-include our Byte shim on mac, working around the
+	     bundled zlib's ftzconf.h skipping its `Byte` typedef when TARGET_OS_MAC is set. Parent-repo
+	     change so it survives the submodule checkout in CI. -->
+	<files id="native-toolkit-freetype">
+		<compilerflag value="-include" if="mac" />
+		<compilerflag value="${NATIVE_TOOLKIT_PATH}/custom/freetype/ftbyteshim.h" if="mac" />
+	</files>
 	<include name="lib/harfbuzz-files.xml" />
 	<include name="lib/lzma/files.xml" />
 	<include name="lib/mbedtls-files.xml" />
