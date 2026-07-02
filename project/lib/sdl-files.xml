@@ -120,8 +120,12 @@
 
         <section if="linux">
 
-           <compilerflag value="-include" />
+            <compilerflag value="-include" />
             <compilerflag value="${NATIVE_TOOLKIT_PATH}/custom/sdl/include/SDL_config.h" />
+
+            <compilerflag value="-I/usr/include/dbus-1.0" />
+            <compilerflag value="-I/usr/lib/x86_64-linux-gnu/dbus-1.0/include" if="HXCPP_M64" />
+            <compilerflag value="-I/usr/lib/i386-linux-gnu/dbus-1.0/include" unless="HXCPP_M32" />
 
             <compilerflag value="-DHAVE_LINUX_VERSION_H" />
             <compilerflag value="-D_REENTRANT" />
@@ -149,6 +153,9 @@
         </section>
 
         <section if="mac">
+
+            <compilerflag value="-include" />
+            <compilerflag value="${NATIVE_TOOLKIT_PATH}/custom/sdl/include/SDL_config.h" />
 
             <compilerflag value="-DTARGET_API_MAC_CARBON" />
             <compilerflag value="-DTARGET_API_MAC_OSX" />
