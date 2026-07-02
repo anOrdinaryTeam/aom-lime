@@ -85,7 +85,7 @@
 			<file name="${NATIVE_TOOLKIT_PATH}/cairo/src/cairo-font-options.c" />
 			<file name="${NATIVE_TOOLKIT_PATH}/cairo/src/cairo-freed-pool.c" />
 			<file name="${NATIVE_TOOLKIT_PATH}/cairo/src/cairo-freelist.c" />
-			<file name="${NATIVE_TOOLKIT_PATH}/cairo/src/cairo-ft-font.c" />
+			<file name="${NATIVE_TOOLKIT_PATH}/custom/cairo/src/cairo-ft-font.c" />
 			<file name="${NATIVE_TOOLKIT_PATH}/cairo/src/cairo-gstate.c" />
 			<file name="${NATIVE_TOOLKIT_PATH}/cairo/src/cairo-hash.c" />
 			<file name="${NATIVE_TOOLKIT_PATH}/cairo/src/cairo-hull.c" />
