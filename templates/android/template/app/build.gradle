@@ -1,7 +1,6 @@
-import groovy.swing.SwingBuilder
-import java.awt.GridBagLayout
-import java.awt.GridBagConstraints
-import javax.swing.border.EmptyBorder
+import javax.swing.JOptionPane
+import javax.swing.JPasswordField
+import org.objectweb.asm.*
 
 apply plugin: 'com.android.application'
 
@@ -13,9 +12,11 @@ System.setProperty('java.awt.headless','false')
 } */
 
 android {
+	namespace "::APP_PACKAGE::"
 	compileSdkVersion Integer.parseInt(project.ANDROID_BUILD_SDK_VERSION)
 	buildToolsVersion project.ANDROID_BUILD_TOOLS_VERSION
 	::if (ANDROID_GRADLE_PLUGIN>="4.0")::ndkPath '::ANDROID_NDK_ROOT_ESCAPED::'::end::
+	::if (ANDROID_NDK_VERSION)::ndkVersion '::ANDROID_NDK_VERSION::'::end::
 
 	defaultConfig {
 		applicationId "::META_PACKAGE_NAME::"
@@ -70,76 +71,111 @@ android {
 		release {
 			minifyEnabled false
 			signingConfig signingConfigs.release
+			proguardFiles getDefaultProguardFile('proguard-android-optimize.txt')
 		}
 	}
 
-	android.applicationVariants.all { variant ->
-		variant.outputs.all { output ->
-			if (outputFileName != null && outputFileName.endsWith('.apk')) {
-				outputFileName =  "::APP_FILE::-" + variant.buildType.name + ".apk"
+	buildFeatures {
+        	buildConfig = true
+	}
+
+	androidComponents {
+		onVariants(selector().all()) { variant ->
+			variant.outputs.forEach { output ->
+				if (output.outputFileName.get().endsWith('.apk')) {
+					output.outputFileName.set("::APP_FILE::-${variant.buildType}.apk")
+				}
 			}
 		}
 	}
 }
 
 dependencies {
+	::if (ANDROID_USE_ANDROIDX)::
+	implementation "androidx.core:core:1.18.0"
+	implementation "androidx.documentfile:documentfile:1.1.0"
+	::end::
 	implementation fileTree(dir: 'libs', include: ['*.jar'])
 	::if (ANDROID_LIBRARY_PROJECTS)::::foreach (ANDROID_LIBRARY_PROJECTS)::implementation project(':deps:::name::')
 	::end::::end::
 }
 
-def getPassword(message) {
-	def password = '';
-	if (System.console() == null) {
-		new SwingBuilder().edt {
-			dialog(
-				title: 'Enter password',
-				alwaysOnTop: true,
-				size: [350, 150],
-				resizable: false,
-				locationRelativeTo: null,
-				pack: true,
-				modal: true,
-				show: true
-			) {
-				lookAndFeel('system')
+tasks.whenTaskAdded { task ->
+	if (task.name.startsWith("bundle")) {
+		task.doLast {
+			def flavor = task.name.substring("bundle".length()).uncapitalize()
+			def outputDir = "${buildDir}/outputs/bundle/${flavor}"
+			def originalFile = file("${outputDir}/app-${flavor}.aab")
+			def renamedFile = file("${outputDir}/::APP_FILE::-${flavor}.aab")
 
-				panel(border: new EmptyBorder(10, 10, 10, 10)) {
-					gridBagLayout()
-					def gbc = new GridBagConstraints();
+			if (renamedFile.exists()) {
+				renamedFile.delete()
+			}
 
-					gbc.gridx = 0
-					gbc.gridy = 0
-					gbc.fill = GridBagConstraints.HORIZONTAL
-					gbc.insets = [0, 0, 10, 0]
-					label(
-						text: '<html>' +
-						'<body style="width: 350px">' +
-						message +
-						'</body>' +
-						'</html>',
-						constraints: gbc)
-
-					gbc.gridy = 1
-					input = passwordField(constraints: gbc)
-
-					gbc.gridy = 2
-					gbc.fill = GridBagConstraints.NONE
-					gbc.insets = [0, 0, 0, 0]
-					gbc.ipadx = 50
-					button = button(
-						defaultButton: true,
-						text: 'OK',
-						actionPerformed: {
-							password = input.password
-							dispose()
-						},
-						constraints: gbc)
-				}
+			if (originalFile.exists()) {
+				originalFile.renameTo(renamedFile)
 			}
 		}
-	} else {
-		password = System.console().readPassword(message)
 	}
-	return new String(password)
+}
+
+def patchSDLActivity(task) {
+	task.doLast {
+		def classDir = task.destinationDirectory.get().asFile
+		def classFile = file("${classDir}/org/libsdl/app/SDLActivity.class")
+		if (classFile.exists()) {
+			logger.lifecycle("Patching SDLActivity.class to add getContext()Landroid/content/Context;")
+			def bytes = classFile.bytes
+			def reader = new ClassReader(bytes)
+			def writer = new ClassWriter(reader, ClassWriter.COMPUTE_MAXS)
+			reader.accept(new ClassVisitor(Opcodes.ASM7, writer) {
+				@Override
+				void visitEnd() {
+					super.visitEnd()
+					MethodVisitor mv = super.visitMethod(
+						Opcodes.ACC_PUBLIC | Opcodes.ACC_STATIC,
+						"getContext",
+						"()Landroid/content/Context;",
+						null, null
+					)
+					mv.visitCode()
+					mv.visitMethodInsn(
+						Opcodes.INVOKESTATIC,
+						"org/libsdl/app/SDLActivity",
+						"getContext",
+						"()Landroid/app/Activity;",
+						false
+					)
+					mv.visitInsn(Opcodes.ARETURN)
+					mv.visitMaxs(1, 1)
+					mv.visitEnd()
+				}
+			}, 0)
+			classFile.bytes = writer.toByteArray()
+		}
+	}
+}
+
+afterEvaluate {
+	tasks.matching { it.name in ["compileDebugJavaWithJavac", "compileReleaseJavaWithJavac"] }.configureEach { patchSDLActivity(it) }
+}
+
+def getPassword(message) {
+    def password = ''
+    if (System.console() == null) {
+        def field = new JPasswordField()
+        def result = JOptionPane.showConfirmDialog(
+            null,
+            field,
+            message,
+            JOptionPane.OK_CANCEL_OPTION,
+            JOptionPane.PLAIN_MESSAGE
+        )
+        if (result == JOptionPane.OK_OPTION) {
+            password = new String(field.getPassword())
+        }
+    } else {
+        password = System.console().readPassword(message)
+    }
+    return password
 }

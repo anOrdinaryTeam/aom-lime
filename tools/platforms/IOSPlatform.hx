@@ -183,7 +183,7 @@ class IOSPlatform extends PlatformTarget
 		IOSHelper.getIOSVersion(project);
 		project.haxedefs.set("IPHONE_VER", project.environment.get("IPHONE_VER"));
 
-		project.haxedefs.set("HXCPP_CPP11", "1");
+		project.haxedefs.set("HXCPP_CPP20", "1");
 
 		if (project.config.getString("ios.compiler") == "llvm" || project.config.getString("ios.compiler", "clang") == "clang")
 		{
@@ -448,6 +448,8 @@ class IOSPlatform extends PlatformTarget
 		{
 			context.HAXELIB_PATH = '';
 		}
+
+		context.CATEGORY_TYPE = project.config.getString("ios.category_type", "public.app-category.entertainment");
 
 		return context;
 	}

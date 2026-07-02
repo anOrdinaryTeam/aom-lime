@@ -31,6 +31,13 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ApplicationInfo;
 
+import ::APP_PACKAGE::.R;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.os.Bundle;
+import android.view.ContextThemeWrapper;
+
 /**
     SDL Activity
 */
@@ -1316,7 +1323,7 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                showDialog(dialogs++, args);
+                messageboxCreateAndShow(args);
             }
         });
 
@@ -1334,6 +1341,64 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
         // return selected value
 
         return messageboxSelection[0];
+    }
+
+    protected void messageboxCreateAndShow(Bundle args) {
+
+        // TODO set values from "flags" to messagebox dialog
+
+        // create dialog with title and a listener to wake up calling thread
+
+        Context dialogContext = new ContextThemeWrapper(SDL.getContext(), R.style.LimeAppDialogTheme);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(dialogContext);
+        builder.setTitle(args.getString("title"));
+        builder.setMessage(args.getString("message"));
+        builder.setCancelable(false);
+
+        // create buttons
+
+        String[] buttonTexts = args.getStringArray("buttonTexts");
+        int[] buttonIds = args.getIntArray("buttonIds");
+
+        // hardcoded but idk how to do better
+        if (buttonTexts.length >= 2)
+        {
+            builder.setPositiveButton(buttonTexts[0], new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface di, int i)
+                {
+                    messageboxSelection[0] = buttonIds[0];
+                    di.dismiss();
+                }
+            });
+            builder.setNegativeButton(buttonTexts[1], new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface di, int i)
+                {
+                    messageboxSelection[1] = buttonIds[1];
+                    di.dismiss();
+                }
+            });
+        }
+        else
+        {
+            builder.setPositiveButton(buttonTexts[0], new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface di, int i)
+                {
+                    messageboxSelection[0] = buttonIds[0];
+                    di.dismiss();
+                }
+            });
+        }
+
+        builder.setOnDismissListener(unused -> {
+            synchronized (messageboxSelection) {
+                messageboxSelection.notify();
+            }
+        });
+
+        builder.show();
     }
 
     @Override
@@ -1940,7 +2005,7 @@ class SDLSurface extends SurfaceView implements SurfaceHolder.Callback,
         int mouseButton;
         int i = -1;
         float x,y,p;
-		
+
 		/**
 		* Prevent id to be -1, since it's used in SDL internal for synthetic events
 		* Appears when using Android emulator, eg:

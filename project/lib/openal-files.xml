@@ -32,6 +32,7 @@
 
 
             <compilerflag value="-I${NATIVE_TOOLKIT_PATH}/sdl/include" if="NATIVE_TOOLKIT_HAVE_SDL" />
+            <compilerflag value="-I${NATIVE_TOOLKIT_PATH}/custom/sdl/include" if="NATIVE_TOOLKIT_HAVE_SDL" />
 
         </section>
 

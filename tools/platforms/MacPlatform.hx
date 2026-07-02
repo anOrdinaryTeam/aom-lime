@@ -120,6 +120,19 @@ class MacPlatform extends PlatformTarget
 			}
 		}
 
+		if (project.targetFlags.exists("64") || project.targetFlags.exists("x86_64"))
+		{
+			targetArchitecture = X64;
+		}
+		else if (project.targetFlags.exists("arm64"))
+		{
+			targetArchitecture = ARM64;
+		}
+		else if (project.targetFlags.exists("32") || project.targetFlags.exists("x86_32"))
+		{
+			targetArchitecture = X86;
+		}
+
 		if (project.targetFlags.exists("neko") || project.target != cast System.hostPlatform)
 		{
 			targetType = "neko";
@@ -328,6 +341,7 @@ class MacPlatform extends PlatformTarget
 		context.HL_FILE = targetDirectory + "/obj/ApplicationMain.hl";
 		context.CPP_DIR = targetDirectory + "/obj/";
 		context.BUILD_DIR = project.app.path + "/mac" + dirSuffix.toLowerCase();
+		context.CATEGORY_TYPE = project.config.getString("mac.category_type", "public.app-category.entertainment");
 
 		return context;
 	}

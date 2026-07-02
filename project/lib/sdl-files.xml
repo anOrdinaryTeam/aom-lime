@@ -1,15 +1,7 @@
 <xml>
 
-    <!-- Upstream SDL2 (libsdl-org/SDL) ships static per-target config headers.
-         SDL_config.h auto-selects SDL_config_windows.h / _macosx.h / _iphoneos.h /
-         _android.h from SDL_platform.h, so no generated/openfl config is needed for
-         those targets. (Linux has no static config upstream and falls back to
-         SDL_config_minimal.h; a generated SDL_config.h is required for a full Linux
-         build.) -->
-
     <files id="native-toolkit-sdl-depends">
 
-        <depend name="${NATIVE_TOOLKIT_PATH}/sdl/include/SDL_config_android.h"/>
         <depend name="${NATIVE_TOOLKIT_PATH}/sdl/include/begin_code.h"/>
         <depend name="${NATIVE_TOOLKIT_PATH}/sdl/include/close_code.h"/>
         <depend name="${NATIVE_TOOLKIT_PATH}/sdl/include/SDL_test_random.h"/>
@@ -61,16 +53,11 @@
         <depend name="${NATIVE_TOOLKIT_PATH}/sdl/include/SDL_gamecontroller.h"/>
         <depend name="${NATIVE_TOOLKIT_PATH}/sdl/include/SDL_gesture.h"/>
         <depend name="${NATIVE_TOOLKIT_PATH}/sdl/include/SDL_haptic.h"/>
-        <depend name="${NATIVE_TOOLKIT_PATH}/sdl/include/SDL_config_winrt.h"/>
         <depend name="${NATIVE_TOOLKIT_PATH}/sdl/include/SDL_copying.h"/>
         <depend name="${NATIVE_TOOLKIT_PATH}/sdl/include/SDL_cpuinfo.h"/>
         <depend name="${NATIVE_TOOLKIT_PATH}/sdl/include/SDL_egl.h"/>
         <depend name="${NATIVE_TOOLKIT_PATH}/sdl/include/SDL_endian.h"/>
-        <depend name="${NATIVE_TOOLKIT_PATH}/sdl/include/SDL_config_iphoneos.h"/>
-        <depend name="${NATIVE_TOOLKIT_PATH}/sdl/include/SDL_config_macosx.h"/>
-        <depend name="${NATIVE_TOOLKIT_PATH}/sdl/include/SDL_config_minimal.h"/>
-        <depend name="${NATIVE_TOOLKIT_PATH}/sdl/include/SDL_config_pandora.h"/>
-        <depend name="${NATIVE_TOOLKIT_PATH}/sdl/include/SDL_config_windows.h" unless="winrt"/>
+        <depend name="${NATIVE_TOOLKIT_PATH}/custom/sdl/include/SDL_config.h"/>
         <depend name="${NATIVE_TOOLKIT_PATH}/sdl/include/SDL_assert.h"/>
         <depend name="${NATIVE_TOOLKIT_PATH}/sdl/include/SDL_atomic.h"/>
         <depend name="${NATIVE_TOOLKIT_PATH}/sdl/include/SDL_audio.h"/>
@@ -82,7 +69,7 @@
         <depend name="${NATIVE_TOOLKIT_PATH}/sdl/include/SDL_gamecontrollerdb.h" if="winrt"/>
         <depend name="${NATIVE_TOOLKIT_PATH}/sdl/include/SDL_windows.h" if="winrt"/>
         <depend name="${NATIVE_TOOLKIT_PATH}/sdl/include/SDL_xinput.h" if="winrt"/>
-    -->
+        -->
         <depend name="${NATIVE_TOOLKIT_PATH}/sdl/src/core/winrt/SDL_winrtapp_common.h" if="winrt"/>
         <depend name="${NATIVE_TOOLKIT_PATH}/sdl/src/core/winrt/SDL_winrtapp_direct3d.h" if="winrt"/>
         <depend name="${NATIVE_TOOLKIT_PATH}/sdl/src/core/winrt/SDL_winrtapp_xaml.h" if="winrt"/>
@@ -105,14 +92,12 @@
 
         <compilerflag value="-I${ANDROID_NDK_ROOT}/sources/android/cpufeatures" if="android"/>
 
-        <compilerflag value="-I${NATIVE_TOOLKIT_PATH}/custom/sdl" />
         <compilerflag value="-I${NATIVE_TOOLKIT_PATH}/sdl/include/" />
+        <compilerflag value="-I${NATIVE_TOOLKIT_PATH}/custom/sdl/include" />
         <compilerflag value="-I${NATIVE_TOOLKIT_PATH}/sdl/src/hidapi/hidapi/" />
 
         <compilerflag value="-DGL_GLEXT_PROTOTYPES" if="android || rpi" />
         <compilerflag value="-DHAVE_LIBC" />
-        <!-- Use Lime's full custom config in custom/sdl (first on the include path). -->
-        <compilerflag value="-DUSING_GENERATED_CONFIG_H" />
 
         <compilerflag value="-D__IPHONEOS__" if="ios || tvos" />
         <compilerflag value="-D__TVOS__" if="tvos" />
