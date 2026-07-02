@@ -550,6 +550,8 @@
             <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/video/cocoa/SDL_cocoavulkan.m" />
             <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/video/cocoa/SDL_cocoawindow.m" />
 
+            <compilerflag value="-fobjc-arc" />
+
         </section>
 
         <section if="ios || tvos">
