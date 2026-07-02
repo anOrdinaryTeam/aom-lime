@@ -370,7 +370,7 @@
 
 	</files>
 
-	<include name="lib/cairo/files.xml" />
+	<include name="lib/cairo-files.xml" />
 	<include name="lib/curl-files.xml" />
 	<include name="lib/efsw/files.xml" />
 	<include name="lib/faudio/files.xml" if="LIME_FAUDIO" />

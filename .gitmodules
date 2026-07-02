@@ -22,7 +22,7 @@
 	url = https://github.com/openfl/libfreetype
 [submodule "project/lib/cairo"]
 	path = project/lib/cairo
-	url = https://github.com/openfl/libcairo
+	url = https://gitlab.freedesktop.org/cairo/cairo.git
 [submodule "project/lib/pixman"]
 	path = project/lib/pixman
 	url = https://gitlab.freedesktop.org/pixman/pixman.git
