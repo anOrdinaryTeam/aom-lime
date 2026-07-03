@@ -595,16 +595,13 @@ namespace lime {
 						SDL_RWread (rw, buffer, 1, (size_t)size);
 						SDL_RWseek (rw, pos, RW_SEEK_SET);
 
-						file = ::tmpfile ();
+						file = ::fmemopen (buffer, (size_t)size, "rb");
 
-						if (file) {
+						if (!file) {
 
-							::fwrite (buffer, 1, (size_t)size, file);
-							::fseek (file, 0, SEEK_SET);
+							free (buffer);
 
 						}
-
-						free (buffer);
 
 					}
 
