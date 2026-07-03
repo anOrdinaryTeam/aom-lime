@@ -678,7 +678,6 @@ typedef unsigned int uintptr_t;
 #define SDL_JOYSTICK_LINUX 1
 #define SDL_JOYSTICK_VIRTUAL 1
 #define SDL_HAPTIC_LINUX 1
-#define SDL_HIDAPI_DISABLED 1
 #define SDL_SENSOR_DUMMY 1
 /* threads / timers / loaders / power / filesystem */
 #define SDL_LOADSO_DLOPEN 1
