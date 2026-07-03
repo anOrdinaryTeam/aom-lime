@@ -13,6 +13,7 @@
 		<compilerflag value="-I${NATIVE_TOOLKIT_PATH}/sdl_image/src" />
 
 		<compilerflag value="-DUSE_STBIMAGE" />
+		<compilerflag value="-DSDL_IMAGE_USE_COMMON_BACKEND" />
 		<compilerflag value="-DLOAD_BMP" />
 		<compilerflag value="-DLOAD_GIF" />
 		<compilerflag value="-DLOAD_JPG" />

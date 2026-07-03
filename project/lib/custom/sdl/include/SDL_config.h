@@ -423,11 +423,9 @@ typedef unsigned int uintptr_t;
 #ifndef SDL_VIDEO_RENDER_OGL
 #define SDL_VIDEO_RENDER_OGL    1
 #endif
-#ifndef SDL_VIDEO_RENDER_OGL_ES2
-#endif
+#undef SDL_VIDEO_RENDER_OGL_ES2
 #if TARGET_RT_64_BIT && (MAC_OS_X_VERSION_MAX_ALLOWED >= 101100)
 #define SDL_PLATFORM_SUPPORTS_METAL    1
-
 #else
 #define SDL_PLATFORM_SUPPORTS_METAL    0
 #endif
@@ -442,8 +440,7 @@ typedef unsigned int uintptr_t;
 #ifndef SDL_VIDEO_OPENGL
 #define SDL_VIDEO_OPENGL    1
 #endif
-#ifndef SDL_VIDEO_OPENGL_ES2
-#endif
+#undef SDL_VIDEO_OPENGL_ES2
 #ifndef SDL_VIDEO_OPENGL_CGL
 #define SDL_VIDEO_OPENGL_CGL    1
 #endif

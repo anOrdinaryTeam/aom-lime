@@ -413,6 +413,7 @@
             <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/joystick/bsd/SDL_bsdjoystick.c" />
             <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/power/linux/SDL_syspower.c" />
             <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/core/linux/SDL_evdev.c" />
+            <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/core/linux/SDL_evdev_capabilities.c" />
             <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/core/linux/SDL_evdev_kbd.c" />
             <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/core/linux/SDL_udev.c" />
             <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/core/linux/SDL_dbus.c" />
@@ -443,6 +444,12 @@
             <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/video/x11/SDL_x11xinput2.c" />
             <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/video/x11/edid-parse.c" />
             <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/filesystem/unix/SDL_sysfilesystem.c" />
+            <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/video/SDL_egl.c" />
+            <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/render/opengles2/SDL_render_gles2.c" />
+            <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/render/opengles2/SDL_shaders_gles2.c" />
+            <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/events/SDL_scancode_tables.c" />
+            <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/events/SDL_keysym_to_scancode.c" />
+            <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/events/imKStoUCS.c" />
 
         </section>
 
@@ -531,6 +538,7 @@
 
             <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/audio/coreaudio/SDL_coreaudio.m" />
             <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/joystick/darwin/SDL_iokitjoystick.c" />
+            <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/joystick/iphoneos/SDL_mfijoystick.m" />
             <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/locale/macosx/SDL_syslocale.m" />
             <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/misc/macosx/SDL_sysurl.m" />
             <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/haptic/darwin/SDL_syshaptic.c" />
@@ -542,6 +550,7 @@
             <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/video/cocoa/SDL_cocoakeyboard.m" />
             <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/video/cocoa/SDL_cocoamessagebox.m" />
             <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/video/cocoa/SDL_cocoametalview.m" />
+            <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/render/metal/SDL_render_metal.m" />
             <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/video/cocoa/SDL_cocoamodes.m" />
             <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/video/cocoa/SDL_cocoamouse.m" />
             <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/video/cocoa/SDL_cocoaopengl.m" />
