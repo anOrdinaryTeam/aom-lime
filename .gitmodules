@@ -13,7 +13,7 @@
 	url = https://github.com/openfl/libogg
 [submodule "project/lib/zlib"]
 	path = project/lib/zlib
-	url = https://github.com/openfl/libzlib
+	url = https://github.com/madler/zlib
 [submodule "project/lib/neko"]
 	path = project/lib/neko
 	url = https://github.com/openfl/libneko
