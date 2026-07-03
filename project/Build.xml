@@ -380,12 +380,9 @@
 	<include name="lib/efsw/files.xml" />
 	<include name="lib/faudio/files.xml" if="LIME_FAUDIO" />
 	<include name="lib/freetype/files.xml" />
-	<!-- Re-open the freetype file group to force-include our Byte shim on mac, working around the
-	     bundled zlib's ftzconf.h skipping its `Byte` typedef when TARGET_OS_MAC is set. Parent-repo
-	     change so it survives the submodule checkout in CI. -->
 	<files id="native-toolkit-freetype">
-		<compilerflag value="-include" if="mac" />
-		<compilerflag value="${NATIVE_TOOLKIT_PATH}/custom/freetype/ftbyteshim.h" if="mac" />
+		<compilerflag value="-include" if="apple" />
+		<compilerflag value="${NATIVE_TOOLKIT_PATH}/custom/freetype/ftbyteshim.h" if="apple" />
 	</files>
 	<include name="lib/harfbuzz-files.xml" />
 	<include name="lib/lzma/files.xml" />
