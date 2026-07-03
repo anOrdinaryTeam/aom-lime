@@ -378,28 +378,33 @@ class AndroidPlatform extends PlatformTarget
 		if (project.targetFlags.exists("ONLY_ARM64"))
 		{
 			arm64 = true;
-			armv7 = x86 = x64 = false;
+			armv5 = armv7 = x86 = x64 = false;
 		}
 		else if (project.targetFlags.exists("ONLY_ARMV7"))
 		{
 			armv7 = true;
-			arm64 = x86 = x64 = false;
+			armv5 = arm64 = x86 = x64 = false;
+		}
+		else if (project.targetFlags.exists("ONLY_ARMV5") || project.targetFlags.exists("ONLY_ARMV6"))
+		{
+			armv5 = true;
+			armv7 = arm64 = x86 = x64 = false;
 		}
 		else if (project.targetFlags.exists("ONLY_X86_64"))
 		{
 			x64 = true;
-			arm64 = armv7 = x86 = false;
+			armv5 = arm64 = armv7 = x86 = false;
 		}
 		else if (project.targetFlags.exists("ONLY_X86"))
 		{
 			x86 = true;
-			arm64 = armv7 = x64 = false;
+			armv5 = arm64 = armv7 = x64 = false;
 		}
 
 		var commands = [];
 
-		if (armv5) commands.push(["-Dandroid", "-DPLATFORM=android-21"]);
-		if (armv7) commands.push(["-Dandroid", "-DHXCPP_ARMV7", "-DHXCPP_ARMV7", "-DPLATFORM=android-21"]);
+		if (armv5) commands.push(["-Dandroid", "-DHXCPP_ARMV5", "-DHXCPP_ARMV6", "-DPLATFORM=android-21"]);
+		if (armv7) commands.push(["-Dandroid", "-DHXCPP_ARMV7", "-DPLATFORM=android-21"]);
 		if (arm64) commands.push(["-Dandroid", "-DHXCPP_ARM64", "-DPLATFORM=android-21"]);
 		if (x86) commands.push(["-Dandroid", "-DHXCPP_X86", "-DPLATFORM=android-21"]);
 		if (x64) commands.push(["-Dandroid", "-DHXCPP_X86_64", "-DPLATFORM=android-21"]);
