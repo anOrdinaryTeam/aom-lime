@@ -394,7 +394,7 @@ void LoadSEALDefaultConfig()
     // SetConfigValue("drivers", "coreaudio,null");
     SetConfigValue("drivers", "sdl2,coreaudio,null"); // coreaudio itself gives no audio output. weird.
     #elif defined(__ANDROID__)
-    SetConfigValue("drivers", "sdl2,oboe,opensl,null");
+    SetConfigValue("drivers", "sdl2,opensl,null");
     #endif
     SetConfigValue("sample-type", "float32");
     SetConfigValue("channels", "stereo");
