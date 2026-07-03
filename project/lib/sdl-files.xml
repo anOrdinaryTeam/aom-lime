@@ -92,8 +92,7 @@
 
         <compilerflag value="-I${ANDROID_NDK_ROOT}/sources/android/cpufeatures" if="android"/>
 
-        <compilerflag value="-I${NATIVE_TOOLKIT_PATH}/custom/sdl/include" if="mac || linux" />
-
+        <compilerflag value="-I${NATIVE_TOOLKIT_PATH}/custom/sdl/include" />
         <compilerflag value="-I${NATIVE_TOOLKIT_PATH}/sdl/include/" />
         <compilerflag value="-I${NATIVE_TOOLKIT_PATH}/custom/sdl/include" />
         <compilerflag value="-I${NATIVE_TOOLKIT_PATH}/sdl/src/hidapi/hidapi/" />

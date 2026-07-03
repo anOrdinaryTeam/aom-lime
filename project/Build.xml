@@ -263,8 +263,8 @@
 				<compilerflag value="-I${NATIVE_TOOLKIT_PATH}/sdl/include/" />
 				<compilerflag value="-I${NATIVE_TOOLKIT_PATH}/custom/sdl/include" />
 				<compilerflag value="-I${NATIVE_TOOLKIT_PATH}/sdl/src/hidapi/hidapi/" />
-				<compilerflag value="-include" if="linux" />
-				<compilerflag value="${NATIVE_TOOLKIT_PATH}/custom/sdl/include/SDL_config.h" if="linux" />
+				<compilerflag value="-include" if="linux || android" />
+				<compilerflag value="${NATIVE_TOOLKIT_PATH}/custom/sdl/include/SDL_config.h" if="linux || android" />
 
 				<compilerflag value="-DHAVE_LIBC" />
 
