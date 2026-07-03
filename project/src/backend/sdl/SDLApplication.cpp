@@ -158,7 +158,7 @@ namespace lime {
 
 					currentUpdate = SDL_GetTicks ();
 					applicationEvent.type = UPDATE;
-					applicationEvent.deltaTime = currentUpdate - lastUpdate;
+					applicationEvent.deltaTime = std::fmin ((double) framePerfFrame * 1000.0 / (double) SDL_GetPerformanceFrequency (), 250.0);
 					lastUpdate = currentUpdate;
 
 					nextUpdate += framePeriod;
