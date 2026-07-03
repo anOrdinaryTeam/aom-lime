@@ -181,6 +181,7 @@ class IOSPlatform extends PlatformTarget
 		}
 
 		IOSHelper.getIOSVersion(project);
+
 		project.haxedefs.set("IPHONE_VER", project.environment.get("IPHONE_VER"));
 
 		project.haxedefs.set("HXCPP_CPP20", "1");
@@ -246,6 +247,7 @@ class IOSPlatform extends PlatformTarget
 		var armv7 = false;
 		var armv7s = false;
 		var arm64 = false;
+		var x64 = false;
 		var architectures = project.architectures;
 
 		if (architectures == null || architectures.length == 0)
@@ -283,13 +285,21 @@ class IOSPlatform extends PlatformTarget
 
 		context.CURRENT_ARCHS = "( " + valid_archs.join(",") + ") ";
 
-		valid_archs.push("x86_64");
-		valid_archs.push("i386");
+		if (System.hostArchitecture == X64)
+		{
+			valid_archs.push("x86_64");
+			x64 = true;
+		}
+		else if (System.hostArchitecture == ARM64)
+		{
+			valid_archs.push("arm64");
+			arm64 = true;
+		}
 
 		context.VALID_ARCHS = valid_archs.join(" ");
 		context.THUMB_SUPPORT = armv6 ? "GCC_THUMB_SUPPORT = NO;" : "";
 
-		var requiredCapabilities = [];
+		var requiredCapabilities:Array<{name:String, value:Bool}> = [];
 
 		if (!armv6 && armv7)
 		{
@@ -303,12 +313,17 @@ class IOSPlatform extends PlatformTarget
 		{
 			requiredCapabilities.push({name: "arm64", value: true});
 		}
+		else if (x64)
+		{
+			requiredCapabilities.push({name: "x86_64", value: true});
+		}
 
 		context.REQUIRED_CAPABILITY = requiredCapabilities;
 		context.ARMV6 = armv6;
 		context.ARMV7 = armv7;
 		context.ARMV7S = armv7s;
 		context.ARM64 = arm64;
+		context.X64 = x64;
 		context.TARGET_DEVICES = switch (project.config.getString("ios.device", "universal"))
 		{
 			case "iphone": "1";
@@ -423,7 +438,7 @@ class IOSPlatform extends PlatformTarget
 
 		if (allowInsecureHTTP != "*" && allowInsecureHTTP != "true")
 		{
-			var sites = [];
+			var sites:Array<{domain: String}> = [];
 
 			if (allowInsecureHTTP != "false")
 			{
@@ -450,6 +465,8 @@ class IOSPlatform extends PlatformTarget
 		}
 
 		context.CATEGORY_TYPE = project.config.getString("ios.category_type", "public.app-category.entertainment");
+
+		context.SHARE_FILES = project.haxedefs.exists("SHARE_MOBILE_FILES");
 
 		return context;
 	}
@@ -481,17 +498,19 @@ class IOSPlatform extends PlatformTarget
 		var armv7s = (project.architectures.indexOf(Architecture.ARMV7S) > -1 && !project.targetFlags.exists("simulator"));
 		var arm64 = (command == "rebuild"
 			|| (project.architectures.indexOf(Architecture.ARM64) > -1 && !project.targetFlags.exists("simulator")));
+		var arm64sim = (command == "rebuild" && project.targetFlags.exists("simulator"));
 		var i386 = (command == "rebuild" || project.targetFlags.exists("simulator"));
 		var x86_64 = (command == "rebuild" || project.targetFlags.exists("simulator"));
 
 		var arc = (project.targetFlags.exists("arc"));
 
-		var commands = [];
+		var commands:Array<Array<String>> = [];
 
 		if (armv6) commands.push(["-Dios", "-DHXCPP_CPP11", "-DHXCPP_ARMV6"]);
 		if (armv7) commands.push(["-Dios", "-DHXCPP_CPP11", "-DHXCPP_ARMV7"]);
 		if (armv7s) commands.push(["-Dios", "-DHXCPP_CPP11", "-DHXCPP_ARMV7S"]);
 		if (arm64) commands.push(["-Dios", "-DHXCPP_CPP11", "-DHXCPP_ARM64"]);
+		if (arm64sim) commands.push(["-Dios", "-Dsimulator", "-DHXCPP_ARM64"]);
 		if (i386) commands.push(["-Dios", "-Dsimulator", "-DHXCPP_M32", "-DHXCPP_CPP11"]);
 		if (x86_64) commands.push(["-Dios", "-Dsimulator", "-DHXCPP_M64", "-DHXCPP_CPP11"]);
 
@@ -604,7 +623,7 @@ class IOSPlatform extends PlatformTarget
 			var sb = project.launchStoryboard;
 
 			var assetsPath = sb.assetsPath;
-			var imagesets = [];
+			var imagesets:Array<ImageSet> = [];
 
 			for (asset in sb.assets)
 			{
@@ -620,7 +639,7 @@ class IOSPlatform extends PlatformTarget
 						var baseImageName = Path.withoutExtension(imageset.name);
 
 						var imageScales = ["1x", "2x", "3x"];
-						var images = [];
+						var images:Array<{idiom:String, filename:String, scale:String}> = [];
 						for (scale in imageScales)
 						{
 							var filename = baseImageName + (scale == "1x" ? "" : "@" + scale) + ".png";
@@ -789,9 +808,9 @@ class IOSPlatform extends PlatformTarget
 
 		System.mkdir(projectDirectory + "/lib");
 
-		for (archID in 0...6)
+		for (archID in 0...7)
 		{
-			var arch = ["armv6", "armv7", "armv7s", "arm64", "i386", "x86_64"][archID];
+			var arch = ["armv6", "armv7", "armv7s", "arm64", "arm64-sim", "i386", "x86_64"][archID];
 
 			if (arch == "armv6" && !context.ARMV6) continue;
 
@@ -799,15 +818,22 @@ class IOSPlatform extends PlatformTarget
 
 			if (arch == "armv7s" && !context.ARMV7S) continue;
 
-			if (arch == "arm64" && !context.ARM64) continue;
+			if (arch == "arm64" && (!context.ARM64 || project.targetFlags.exists("simulator"))) continue;
+
+			if (arch == "arm64-sim" && (!context.ARM64 || !project.targetFlags.exists("simulator"))) continue;
+
+			if (arch == "i386" && !context.X64) continue;
+
+			if (arch == "x86_64" && !context.X64) continue;
 
 			var libExt = [
 				".iphoneos.a",
-				".iphoneos-v7.a",
-				".iphoneos-v7s.a",
-				".iphoneos-64.a",
+				".iphoneos-armv7.a",
+				".iphoneos-armv7s.a",
+				".iphoneos-arm64.a",
+				".iphonesim-arm64.a",
 				".iphonesim.a",
-				".iphonesim-64.a"
+				".iphonesim-x86_64.a"
 			][archID];
 
 			System.mkdir(projectDirectory + "/lib/" + arch);
