@@ -64,7 +64,7 @@ class RunScript
 							System.runCommand(limeDirectory, "neko", args.concat(["windows", toolsDirectory]));
 						}
 
-					case "Mac", "Mac64":
+					case "Mac", "Mac64", "MacArm64":
 						if (System.hostPlatform == MAC)
 						{
 							System.runCommand(limeDirectory, "neko", args.concat(["mac", toolsDirectory]));
