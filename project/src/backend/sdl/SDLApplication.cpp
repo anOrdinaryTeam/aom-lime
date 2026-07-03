@@ -13,6 +13,15 @@
 #include "emscripten.h"
 #endif
 
+#ifdef _WIN32
+// For timeBeginPeriod: by default the Windows scheduler timer is ~15.6 ms, which makes
+// SDL_Delay oversleep and blows the frame pacer's budget. Raising it to 1 ms lets the
+// pacer sleep accurately. winmm is already linked by SDL on Windows.
+#include <windows.h>
+#include <mmsystem.h> // timeBeginPeriod/timeEndPeriod (not pulled in by windows.h under WIN32_LEAN_AND_MEAN)
+#pragma comment(lib, "winmm.lib")
+#endif
+
 
 namespace lime {
 
@@ -26,6 +35,11 @@ namespace lime {
 
 
 	SDLApplication::SDLApplication () {
+
+		#ifdef _WIN32
+		// Request 1 ms scheduler granularity so the frame pacer's SDL_Delay is accurate.
+		timeBeginPeriod (1);
+		#endif
 
 		// When stdout/stderr aren't a real TTY (redirected, or after SDL attaches its own
 		// console/subsystem), the CRT switches them to fully block-buffered, so traces show up
@@ -107,7 +121,9 @@ namespace lime {
 
 	SDLApplication::~SDLApplication () {
 
-
+		#ifdef _WIN32
+		timeEndPeriod (1);
+		#endif
 
 	}
 
@@ -893,27 +909,30 @@ namespace lime {
 		framePerfPrevious = current;
 
 		// If the frame was faster than the target, delay for the remainder to cap FPS.
-		// SDL2 has no SDL_DelayPrecise, so sleep the bulk (leaving ~1 ms) and spin the
-		// remainder for accurate wake-up.
+		// SDL2 has no SDL_DelayPrecise, so sleep in short 1 ms steps - re-measuring each
+		// time and stopping ~2 ms early - then spin out the remainder precisely. Sleeping
+		// in small steps instead of one big SDL_Delay keeps a single oversleeping wake-up
+		// from blowing past the target and spiking the next frame's deltaTime (the jitter
+		// that reads as input stutter). timeBeginPeriod(1) on Windows keeps the steps tight.
 		if (framePerfTarget > 0 && framePerfFrame < framePerfTarget) {
 
 			Uint64 remaining = framePerfTarget - framePerfFrame;
 			Uint64 endTick = framePerfPrevious + remaining;
-			double remainingMS = (double) remaining * 1000.0 / (double) freq;
+			Uint64 spinMargin = freq * 2 / 1000; // spin out the final ~2 ms for accuracy
 
-			if (remainingMS > 2.0) {
+			#if defined(HX_MACOS) || defined(ANDROID)
+			System::GCEnterBlocking ();
+			#endif
 
-				#if defined(HX_MACOS) || defined(ANDROID)
-				System::GCEnterBlocking ();
-				#endif
+			while (SDL_GetPerformanceCounter () + spinMargin < endTick) {
 
-				SDL_Delay ((Uint32) (remainingMS - 1.0));
-
-				#if defined(HX_MACOS) || defined(ANDROID)
-				System::GCExitBlocking ();
-				#endif
+				SDL_Delay (1);
 
 			}
+
+			#if defined(HX_MACOS) || defined(ANDROID)
+			System::GCExitBlocking ();
+			#endif
 
 			while (SDL_GetPerformanceCounter () < endTick) {}
 
