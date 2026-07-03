@@ -577,9 +577,39 @@ namespace lime {
 			case SDL_RWOPS_JNIFILE:
 			{
 				#ifdef ANDROID
+
 				System::GCEnterBlocking ();
-				FILE* file = ::fdopen (((SDL_RWops*)handle)->hidden.androidio.fd, "rb");
-				::fseek (file, ((SDL_RWops*)handle)->hidden.androidio.offset, 0);
+
+				SDL_RWops* rw = (SDL_RWops*)handle;
+				FILE* file = NULL;
+				Sint64 size = SDL_RWsize (rw);
+
+				if (size > 0) {
+
+					void* buffer = malloc ((size_t)size);
+
+					if (buffer) {
+
+						Sint64 pos = SDL_RWtell (rw);
+						SDL_RWseek (rw, 0, RW_SEEK_SET);
+						SDL_RWread (rw, buffer, 1, (size_t)size);
+						SDL_RWseek (rw, pos, RW_SEEK_SET);
+
+						file = ::tmpfile ();
+
+						if (file) {
+
+							::fwrite (buffer, 1, (size_t)size, file);
+							::fseek (file, 0, SEEK_SET);
+
+						}
+
+						free (buffer);
+
+					}
+
+				}
+
 				System::GCExitBlocking ();
 				return file;
 				#endif
