@@ -98,6 +98,8 @@
 		<define name="native-trace" if="flash" unless="haxe-trace || haxetrace" />
 		<define name="fdb" if="flash debug" unless="nofdb" />
 
+		<ndll name="c++_shared" dir="dependencies" if="android" />
+
 		<define name="MACOSX_DEPLOYMENT_TARGET" value="10.15" if="mac" unless="MACOSX_DEPLOYMENT_TARGET" />
 		<setenv name="MACOSX_DEPLOYMENT_TARGET" value="${MACOSX_DEPLOYMENT_TARGET}" if="mac" />
 
