@@ -536,7 +536,7 @@ typedef unsigned int uintptr_t;
 #endif
 #define SDL_AUDIO_DRIVER_ANDROID    1
 #define SDL_AUDIO_DRIVER_OPENSLES   1
-#undef SDL_AUDIO_DRIVER_AAUDIO
+#define SDL_AUDIO_DRIVER_AAUDIO 1
 #define SDL_JOYSTICK_ANDROID    1
 #define SDL_JOYSTICK_HIDAPI     1
 #define SDL_JOYSTICK_VIRTUAL    1

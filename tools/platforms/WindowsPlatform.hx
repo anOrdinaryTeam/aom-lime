@@ -503,6 +503,14 @@ class WindowsPlatform extends PlatformTarget
 					flags.push("-Dno_console");
 				}
 
+				if (project.targetFlags.exists("mingw"))
+				{
+					haxeArgs.push("-D");
+					haxeArgs.push("mingw");
+					flags.push("-Dmingw");
+					flags.push("-Dno_shared_libs");
+				}
+
 				if (!project.targetFlags.exists("static"))
 				{
 					System.runCommand("", "haxe", haxeArgs);
@@ -655,11 +663,23 @@ class WindowsPlatform extends PlatformTarget
 				// default to 64 bit, just like upstream Hashlink releases
 				if (!targetFlags.exists("32") && (System.hostArchitecture == X64 || targetFlags.exists("64")))
 				{
-					commands.push(["-Dwindows", "-DHXCPP_M64", "-Dhashlink"]);
+					var args = ["-Dwindows", "-DHXCPP_M64", "-Dhashlink"];
+					if (project.targetFlags.exists("mingw"))
+					{
+						args.push("-Dmingw");
+						args.push("-Dno_shared_libs");
+					}
+					commands.push(args);
 				}
 				else
 				{
-					commands.push(["-Dwindows", "-DHXCPP_M32", "-Dhashlink"]);
+					var args = ["-Dwindows", "-DHXCPP_M32", "-Dhashlink"];
+					if (project.targetFlags.exists("mingw"))
+					{
+						args.push("-Dmingw");
+						args.push("-Dno_shared_libs");
+					}
+					commands.push(args);
 				}
 			}
 			else
@@ -673,7 +693,13 @@ class WindowsPlatform extends PlatformTarget
 					}
 					else
 					{
-						commands.push(["-Dwindows", "-DHXCPP_M32"]);
+						var args = ["-Dwindows", "-DHXCPP_M32"];
+						if (project.targetFlags.exists("mingw"))
+						{
+							args.push("-Dmingw");
+							args.push("-Dno_shared_libs");
+						}
+						commands.push(args);
 					}
 				}
 
@@ -691,7 +717,13 @@ class WindowsPlatform extends PlatformTarget
 					}
 					else
 					{
-						commands.push(["-Dwindows", "-DHXCPP_M64"]);
+						var args = ["-Dwindows", "-DHXCPP_M64"];
+						if (project.targetFlags.exists("mingw"))
+						{
+							args.push("-Dmingw");
+							args.push("-Dno_shared_libs");
+						}
+						commands.push(args);
 					}
 				}
 			}
@@ -810,6 +842,26 @@ class WindowsPlatform extends PlatformTarget
 		{
 			arguments = arguments.concat(["-livereload"]);
 			System.runCommand(applicationDirectory, Path.withoutDirectory(executablePath), arguments);
+		}
+		else if (project.targetFlags.exists("mingw"))
+		{
+			arguments = arguments.concat(["-livereload"]);
+
+			var winePath = project.defines.get("WINE_PATH");
+
+			if (winePath == null || winePath.length == 0)
+			{
+				return;
+			}
+
+			var crossoverBottle = project.defines.get("CROSSOVER_BOTTLE");
+
+			if (crossoverBottle != null && crossoverBottle.length > 0)
+			{
+				Sys.putEnv("CX_BOTTLE", crossoverBottle);
+			}
+
+			System.runCommand(applicationDirectory, winePath, [Path.withoutDirectory(executablePath)].concat(arguments));
 		}
 	}
 
