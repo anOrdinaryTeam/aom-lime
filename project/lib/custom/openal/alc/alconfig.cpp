@@ -29,6 +29,9 @@
 #ifdef __APPLE__
 #include <CoreFoundation/CoreFoundation.h>
 #endif
+#ifdef __ANDROID__
+#include <sys/system_properties.h>
+#endif
 
 #include <algorithm>
 #include <array>
@@ -391,10 +394,16 @@ void LoadSEALDefaultConfig()
     #elif defined(__linux__) && !defined(__ANDROID__)
     SetConfigValue("drivers", "pipewire,pulse,alsa,jack,oss,null");
     #elif defined(__APPLE__)
-    // SetConfigValue("drivers", "coreaudio,null");
-    SetConfigValue("drivers", "sdl2,coreaudio,null"); // coreaudio itself gives no audio output. weird.
+    // SetConfigValue("drivers", "sdl2,coreaudio,null");
+    SetConfigValue("drivers", "coreaudio,null");
     #elif defined(__ANDROID__)
-    SetConfigValue("drivers", "sdl2,opensl,null");
+    //SetConfigValue("drivers", "sdl2,opensl,null");
+    char sdk[PROP_VALUE_MAX] = { 0 };
+    if (__system_property_get("ro.build.version.sdk", sdk) != 0 && atoi(sdk) < 30) {
+        SetConfigValue("drivers", "opensl,null");
+    } else {
+        SetConfigValue("drivers", "aaudio,null");
+    }
     #endif
     SetConfigValue("sample-type", "float32");
     SetConfigValue("channels", "stereo");

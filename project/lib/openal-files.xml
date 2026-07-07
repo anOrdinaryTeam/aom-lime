@@ -26,6 +26,7 @@
 
             <compilerflag value="-I${NATIVE_TOOLKIT_PATH}/openal/gsl/include" />
 
+            <compilerflag value="-I${NATIVE_TOOLKIT_PATH}/openal/backends" />
 
             <compilerflag value="-I${NATIVE_TOOLKIT_PATH}/sdl/include" if="NATIVE_TOOLKIT_HAVE_SDL" />
             <compilerflag value="-I${NATIVE_TOOLKIT_PATH}/custom/sdl/include" if="NATIVE_TOOLKIT_HAVE_SDL" />
@@ -154,7 +155,8 @@
 
                 <section if="android">
 
-                    <file name="${NATIVE_TOOLKIT_PATH}/openal/alc/backends/opensl.cpp" />
+                    <file name="${NATIVE_TOOLKIT_PATH}/custom/openal/alc/backends/opensl.cpp" />
+                    <file name="${NATIVE_TOOLKIT_PATH}/custom/openal/alc/backends/aaudio.cpp" />
 
                 </section>
 
@@ -204,7 +206,7 @@
 
             <section>
 
-                <file name="${NATIVE_TOOLKIT_PATH}/openal/alc/alc.cpp" />
+                <file name="${NATIVE_TOOLKIT_PATH}/custom/openal/alc/alc.cpp" />
                 <file name="${NATIVE_TOOLKIT_PATH}/custom/openal/alc/alconfig.cpp" />
                 <file name="${NATIVE_TOOLKIT_PATH}/openal/alc/alu.cpp" />
                 <file name="${NATIVE_TOOLKIT_PATH}/openal/alc/context.cpp" />
